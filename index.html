@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Zwe Maung Maung - Report Builder</title>
+<title>Photo Report Builder</title>
 
 <style>
 
@@ -21,106 +21,55 @@ body{
     padding-bottom:100px;
 }
 
-img{
-    max-width:100%;
-    display:block;
-}
-
-/* NAVBAR */
-
-.nav-bar{
-    background:#1d4ed8;
-    color:white;
-    padding:14px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    position:sticky;
-    top:0;
-    z-index:100;
-}
-
-.nav-title{
-    font-size:14px;
-    font-weight:900;
-    text-transform:uppercase;
-}
-
-.nav-subtitle{
-    font-size:10px;
-    color:#bfdbfe;
-}
-
-.nav-tag{
-    background:#1e3a8a;
-    color:#93c5fd;
-    padding:4px 8px;
-    border-radius:5px;
-    font-size:10px;
-    font-weight:bold;
-}
-
-/* CONTAINER */
-
 .container{
-    max-width:450px;
-    margin:16px auto;
-    padding:0 12px;
+    max-width:460px;
+    margin:auto;
+    padding:14px;
 }
 
 .card{
     background:white;
     border-radius:14px;
     padding:18px;
-    margin-bottom:16px;
+    margin-bottom:18px;
     border:1px solid #e2e8f0;
-    box-shadow:0 2px 6px rgba(0,0,0,0.05);
+    box-shadow:0 2px 8px rgba(0,0,0,0.05);
 }
 
-.card-title{
-    font-size:13px;
+.title{
+    font-size:14px;
     font-weight:bold;
+    color:#2563eb;
     margin-bottom:14px;
-    color:#1d4ed8;
 }
-
-/* FORM */
 
 .form-group{
     margin-bottom:14px;
 }
 
-.form-label{
+label{
     display:block;
     margin-bottom:6px;
-    font-size:12px;
+    font-size:13px;
     font-weight:bold;
 }
 
-.form-control{
+input,
+select{
     width:100%;
-    border:1px solid #cbd5e1;
+    padding:12px;
     border-radius:10px;
-    padding:11px;
-    font-size:13px;
-    outline:none;
+    border:1px solid #cbd5e1;
+    font-size:14px;
     background:white;
 }
 
-.form-control:focus{
-    border-color:#1d4ed8;
-}
-
 input[type=file]{
-    background:#f8fafc;
     border-style:dashed;
 }
 
-/* PREVIEW */
-
-.mobile-preview-box{
+.preview{
     aspect-ratio:1584 / 1123;
-    width:100%;
     background:white;
     border:1px solid #cbd5e1;
     border-radius:10px;
@@ -149,9 +98,9 @@ input[type=file]{
     height:65%;
 }
 
-.img-box{
+.slot{
     border:1px solid #cbd5e1;
-    background:#f1f5f9;
+    background:#f8fafc;
     border-radius:5px;
     overflow:hidden;
     display:flex;
@@ -159,36 +108,34 @@ input[type=file]{
     justify-content:center;
 }
 
-.img-box img{
+.slot img{
     width:100%;
     height:100%;
     object-fit:cover;
+    display:block;
 }
 
 .placeholder{
-    font-size:6px;
+    font-size:7px;
     color:#94a3b8;
-    font-weight:bold;
 }
 
-.preview-footer{
+.footer{
     text-align:center;
 }
 
-.preview-remark{
+.remark{
     font-size:6px;
     font-weight:bold;
 }
 
-.preview-label{
+.auto-label{
     font-size:4px;
-    font-family:monospace;
     margin-top:2px;
+    font-family:monospace;
 }
 
-/* BUTTON */
-
-.footer-actions{
+.bottom-bar{
     position:fixed;
     bottom:0;
     left:0;
@@ -198,26 +145,18 @@ input[type=file]{
     padding:12px;
 }
 
-.button-group{
-    max-width:450px;
-    margin:auto;
-}
-
 .btn{
     width:100%;
     border:none;
     background:#16a34a;
     color:white;
-    font-weight:bold;
     padding:14px;
     border-radius:12px;
-    cursor:pointer;
-    font-size:14px;
+    font-size:15px;
+    font-weight:bold;
 }
 
-/* LOADING */
-
-.overlay{
+.loading{
     display:none;
     position:fixed;
     inset:0;
@@ -236,7 +175,7 @@ input[type=file]{
     border-top-color:transparent;
     border-radius:50%;
     animation:spin .8s linear infinite;
-    margin-bottom:12px;
+    margin-bottom:10px;
 }
 
 @keyframes spin{
@@ -245,12 +184,12 @@ input[type=file]{
     }
 }
 
-/* HIDDEN A3 */
+/* HIDDEN EXPORT */
 
-#a3MasterContainerToCapture{
+#exportArea{
     position:absolute;
-    left:-9999px;
-    top:-9999px;
+    left:-99999px;
+    top:-99999px;
     width:1584px;
     height:1123px;
     background:white;
@@ -260,59 +199,56 @@ input[type=file]{
     justify-content:space-between;
 }
 
-.a3-title{
+.export-title{
     font-size:24px;
     font-weight:900;
     border-bottom:3px solid black;
     padding-bottom:4px;
 }
 
-.a3-room{
-    margin-top:8px;
+.export-room{
     font-size:18px;
+    margin-top:8px;
     margin-bottom:20px;
 }
 
-.a3-grid{
+.export-grid{
     display:grid;
     grid-template-columns:1fr 1fr;
     gap:24px;
     height:720px;
 }
 
-.a3-box{
+.export-slot{
     border:1px solid #cbd5e1;
     background:#f8fafc;
-    overflow:hidden;
     border-radius:6px;
+    overflow:hidden;
     display:flex;
     align-items:center;
     justify-content:center;
 }
 
-.a3-box img{
+.export-slot img{
     width:100%;
     height:100%;
     object-fit:cover;
+    display:block;
 }
 
-.a3-placeholder{
-    color:#94a3b8;
-}
-
-.a3-footer{
+.export-footer{
     text-align:center;
 }
 
-.a3-remark{
+.export-remark{
     font-size:20px;
     font-weight:bold;
 }
 
-.a3-label{
+.export-label{
     margin-top:8px;
-    font-family:monospace;
     font-size:14px;
+    font-family:monospace;
 }
 
 </style>
@@ -323,134 +259,117 @@ input[type=file]{
 
 <body>
 
-<div class="nav-bar">
-
-    <div>
-        <div class="nav-title">ZWE MAUNG MAUNG</div>
-        <div class="nav-subtitle">Report Builder</div>
-    </div>
-
-    <div class="nav-tag">v6.0</div>
-
-</div>
-
 <div class="container">
 
     <div class="card">
 
-        <div class="card-title">
-            📋 အချက်အလက် ဖြည့်ရန်
+        <div class="title">
+            📋 Report Information
         </div>
 
         <div class="form-group">
-            <label class="form-label">
-                အထပ်ရွေးရန်
-            </label>
 
-            <select id="floorSelect"
-            class="form-control"
-            onchange="triggerAutoLiveSync()">
+            <label>Floor</label>
 
-                <option value="Ground Floor">Ground Floor</option>
-                <option value="First Floor">First Floor</option>
-                <option value="Second Floor">Second Floor</option>
-                <option value="Third Floor">Third Floor</option>
-                <option value="Fourth Floor">Fourth Floor</option>
+            <select id="floor" onchange="syncText()">
+
+                <option>Ground Floor</option>
+                <option>First Floor</option>
+                <option>Second Floor</option>
+                <option>Third Floor</option>
 
             </select>
+
         </div>
 
         <div class="form-group">
-            <label class="form-label">
-                Room Name
-            </label>
+
+            <label>Room Name</label>
 
             <input
             type="text"
-            id="roomNameInput"
-            class="form-control"
+            id="room"
             placeholder="R Room"
-            oninput="triggerAutoLiveSync()">
+            oninput="syncText()">
+
         </div>
 
         <div class="form-group">
-            <label class="form-label">
-                ဓာတ်ပုံတင်ရန်
-            </label>
+
+            <label>Choose Photos</label>
 
             <input
             type="file"
-            id="photoFilesInput"
-            class="form-control"
+            id="photos"
             multiple
             accept="image/*"
-            onchange="processObjectImagesAutomatically()">
+            onchange="loadImages()">
+
         </div>
 
         <div class="form-group">
-            <label class="form-label">
-                Remark
-            </label>
+
+            <label>Remark</label>
 
             <input
             type="text"
-            id="roomRemarkInput"
-            class="form-control"
+            id="remark"
             placeholder="Remark..."
-            oninput="triggerAutoLiveSync()">
+            oninput="syncText()">
+
         </div>
 
     </div>
 
-    <!-- PREVIEW -->
+    <!-- LIVE PREVIEW -->
 
     <div class="card">
 
-        <div class="card-title">
+        <div class="title">
             🖼️ LIVE PREVIEW
         </div>
 
-        <div class="mobile-preview-box">
+        <div class="preview">
 
             <div>
-                <div class="preview-floor" id="previewFloor">
+
+                <div class="preview-floor" id="pFloor">
                     Ground Floor
                 </div>
 
-                <div class="preview-room" id="previewRoom">
+                <div class="preview-room" id="pRoom">
                     R Room
                 </div>
+
             </div>
 
             <div class="preview-grid">
 
-                <div class="img-box" id="pSlot0">
+                <div class="slot" id="slot0">
                     <span class="placeholder">Photo 1</span>
                 </div>
 
-                <div class="img-box" id="pSlot1">
+                <div class="slot" id="slot1">
                     <span class="placeholder">Photo 2</span>
                 </div>
 
-                <div class="img-box" id="pSlot2">
+                <div class="slot" id="slot2">
                     <span class="placeholder">Photo 3</span>
                 </div>
 
-                <div class="img-box" id="pSlot3">
+                <div class="slot" id="slot3">
                     <span class="placeholder">Photo 4</span>
                 </div>
 
             </div>
 
-            <div class="preview-footer">
+            <div class="footer">
 
-                <div class="preview-remark"
-                id="previewCustomRemark">
+                <div class="remark" id="pRemark">
                     -
                 </div>
 
-                <div class="preview-label"
-                id="previewAutoLabel">
+                <div class="auto-label" id="pLabel">
                     GF-R ROOM
                 </div>
 
@@ -464,80 +383,55 @@ input[type=file]{
 
 <!-- BUTTON -->
 
-<div class="footer-actions">
+<div class="bottom-bar">
 
-    <div class="button-group">
-
-        <button
-        class="btn"
-        onclick="downloadA3LandscapeImage()">
-
-            💾 JPEG ထုတ်ယူမည်
-
-        </button>
-
-    </div>
+    <button class="btn" onclick="downloadImage()">
+        💾 JPEG Export
+    </button>
 
 </div>
 
 <!-- LOADING -->
 
-<div class="overlay" id="loadingOverlay">
+<div class="loading" id="loading">
 
     <div class="spinner"></div>
 
-    <div>
-        Exporting...
-    </div>
+    <div>Exporting...</div>
 
 </div>
 
-<!-- HIDDEN A3 -->
+<!-- HIDDEN EXPORT -->
 
-<div id="a3MasterContainerToCapture">
+<div id="exportArea">
 
     <div>
 
-        <div class="a3-title"
-        id="finalFloorTitle">
+        <div class="export-title" id="eFloor">
             Ground Floor
         </div>
 
-        <div class="a3-room"
-        id="finalRoomTitle">
+        <div class="export-room" id="eRoom">
             R Room
         </div>
 
-        <div class="a3-grid">
+        <div class="export-grid">
 
-            <div class="a3-box" id="fSlot0">
-                <span class="a3-placeholder">Photo 1</span>
-            </div>
-
-            <div class="a3-box" id="fSlot1">
-                <span class="a3-placeholder">Photo 2</span>
-            </div>
-
-            <div class="a3-box" id="fSlot2">
-                <span class="a3-placeholder">Photo 3</span>
-            </div>
-
-            <div class="a3-box" id="fSlot3">
-                <span class="a3-placeholder">Photo 4</span>
-            </div>
+            <div class="export-slot" id="eSlot0"></div>
+            <div class="export-slot" id="eSlot1"></div>
+            <div class="export-slot" id="eSlot2"></div>
+            <div class="export-slot" id="eSlot3"></div>
 
         </div>
 
     </div>
 
-    <div class="a3-footer">
+    <div class="export-footer">
 
-        <div class="a3-remark"
-        id="finalCustomRemark">
+        <div class="export-remark" id="eRemark">
         </div>
 
-        <div class="a3-label"
-        id="finalAutoLabel">
+        <div class="export-label" id="eLabel">
         </div>
 
     </div>
@@ -546,68 +440,62 @@ input[type=file]{
 
 <script>
 
-function getFloorShortCode(floorName){
+function getCode(floor){
 
-    if(floorName.includes("Ground")) return "GF";
-    if(floorName.includes("First")) return "1F";
-    if(floorName.includes("Second")) return "2F";
-    if(floorName.includes("Third")) return "3F";
-    if(floorName.includes("Fourth")) return "4F";
+    if(floor.includes("Ground")) return "GF";
+    if(floor.includes("First")) return "1F";
+    if(floor.includes("Second")) return "2F";
+    if(floor.includes("Third")) return "3F";
 
     return "SITE";
 }
 
 /* TEXT SYNC */
 
-function triggerAutoLiveSync(){
+function syncText(){
 
     const floor =
-    document.getElementById("floorSelect").value;
+    document.getElementById("floor").value;
 
     const room =
-    document.getElementById("roomNameInput").value.trim()
-    || "R Room";
+    document.getElementById("room").value || "R Room";
 
     const remark =
-    document.getElementById("roomRemarkInput").value.trim()
-    || "-";
+    document.getElementById("remark").value || "-";
 
-    const code =
-    getFloorShortCode(floor);
+    const code = getCode(floor);
 
-    document.getElementById("previewFloor").innerText = floor;
-    document.getElementById("previewRoom").innerText = room;
-    document.getElementById("previewCustomRemark").innerText = remark;
-    document.getElementById("previewAutoLabel").innerText = `${code}-${room}`;
+    // PREVIEW
 
-    document.getElementById("finalFloorTitle").innerText = floor;
-    document.getElementById("finalRoomTitle").innerText = room;
-    document.getElementById("finalCustomRemark").innerText = remark;
-    document.getElementById("finalAutoLabel").innerText = `${code}-${room}`;
+    document.getElementById("pFloor").innerText = floor;
+    document.getElementById("pRoom").innerText = room;
+    document.getElementById("pRemark").innerText = remark;
+    document.getElementById("pLabel").innerText = `${code}-${room}`;
+
+    // EXPORT
+
+    document.getElementById("eFloor").innerText = floor;
+    document.getElementById("eRoom").innerText = room;
+    document.getElementById("eRemark").innerText = remark;
+    document.getElementById("eLabel").innerText = `${code}-${room}`;
 }
 
-/* IMAGE LOAD */
+/* LOAD IMAGES */
 
-function processObjectImagesAutomatically(){
-
-    const fileInput =
-    document.getElementById("photoFilesInput");
+function loadImages(){
 
     const files =
-    Array.from(fileInput.files).slice(0,4);
+    Array.from(document.getElementById("photos").files).slice(0,4);
 
-    /* RESET */
+    // RESET
 
     for(let i=0;i<4;i++){
 
-        document.getElementById(`pSlot${i}`).innerHTML =
+        document.getElementById(`slot${i}`).innerHTML =
         `<span class="placeholder">Photo ${i+1}</span>`;
 
-        document.getElementById(`fSlot${i}`).innerHTML =
-        `<span class="a3-placeholder">Photo ${i+1}</span>`;
+        document.getElementById(`eSlot${i}`).innerHTML = "";
     }
-
-    if(files.length === 0) return;
 
     files.forEach((file,index)=>{
 
@@ -615,38 +503,42 @@ function processObjectImagesAutomatically(){
 
         reader.onload = function(e){
 
-            const imageData = e.target.result;
+            const imgData = e.target.result;
 
-            /* PREVIEW */
+            // PREVIEW IMAGE
 
-            const pImg = document.createElement("img");
-            pImg.src = imageData;
+            const img1 = document.createElement("img");
 
-            document.getElementById(`pSlot${index}`).innerHTML = "";
-            document.getElementById(`pSlot${index}`).appendChild(pImg);
+            img1.src = imgData;
 
-            /* FINAL */
+            img1.onload = function(){
 
-            const fImg = document.createElement("img");
-            fImg.src = imageData;
+                document.getElementById(`slot${index}`).innerHTML = "";
 
-            document.getElementById(`fSlot${index}`).innerHTML = "";
-            document.getElementById(`fSlot${index}`).appendChild(fImg);
+                document.getElementById(`slot${index}`).appendChild(img1);
+
+                // EXPORT IMAGE
+
+                const img2 = document.createElement("img");
+
+                img2.src = imgData;
+
+                document.getElementById(`eSlot${index}`).appendChild(img2);
+            };
         };
 
         reader.readAsDataURL(file);
 
     });
 
-    triggerAutoLiveSync();
 }
 
-/* DOWNLOAD */
+/* EXPORT */
 
-async function downloadA3LandscapeImage(){
+async function downloadImage(){
 
     const room =
-    document.getElementById("roomNameInput").value.trim();
+    document.getElementById("room").value.trim();
 
     if(!room){
 
@@ -655,54 +547,49 @@ async function downloadA3LandscapeImage(){
         return;
     }
 
-    document.getElementById("loadingOverlay").style.display = "flex";
-
-    triggerAutoLiveSync();
+    document.getElementById("loading").style.display = "flex";
 
     await new Promise(r=>setTimeout(r,1000));
 
-    const target =
-    document.getElementById("a3MasterContainerToCapture");
+    const area =
+    document.getElementById("exportArea");
 
-    html2canvas(target,{
-
+    html2canvas(area,{
         scale:2,
         useCORS:true,
-        backgroundColor:"#ffffff",
-        logging:false
+        backgroundColor:"#ffffff"
+    })
+    .then(canvas=>{
 
-    }).then(canvas=>{
-
-        const image =
+        const url =
         canvas.toDataURL("image/jpeg",0.95);
 
         const link =
         document.createElement("a");
 
         link.download =
-        `A3_Report_${room}.jpg`;
+        `Report_${room}.jpg`;
 
-        link.href = image;
+        link.href = url;
 
         link.click();
 
-        document.getElementById("loadingOverlay").style.display = "none";
-
-    }).catch(err=>{
+        document.getElementById("loading").style.display = "none";
+    })
+    .catch(err=>{
 
         console.log(err);
 
         alert("Export Error");
 
-        document.getElementById("loadingOverlay").style.display = "none";
-
+        document.getElementById("loading").style.display = "none";
     });
 
 }
 
-/* INITIAL */
+/* INIT */
 
-triggerAutoLiveSync();
+syncText();
 
 </script>
 

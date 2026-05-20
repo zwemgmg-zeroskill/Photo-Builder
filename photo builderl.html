@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>gggg.html</title>
+  <style>
+
+  </style>
+</head>
+<body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>King Report A3 - Ultra Fast Fixed</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        /* Hidden high-res A3 matrix canvas container to avoid zooming issues on phones */
+        #a3HiddenCanvasContainer {
+            position: absolute;
+            left: -9999px;
+            top: -9999px;
+            width: 1584px;
+            height: 1123px;
+            background-color: #ffffff;
+            padding: 60px;
+            box-sizing: border-box;
+        }
+        /* Mobile View Preview Box Aspect Ratio styling */
+        .mobile-preview-box {
+            aspect-ratio: 1584 / 1123;
+            width: 100%;
+            background: white;
+            border: 1px solid #ccc;
+            position: relative;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 font-sans text-gray-800 antialiased">
+
+    <div class="bg-blue-700 text-white p-4 shadow-md sticky top-0 z-40 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+            <span class="text-xl">🏗️</span>
+            <div>
+                <h1 class="text-sm font-black tracking-wide uppercase">Zwe Maung Maung</h1>
+                <p class="text-[10px] text-blue-200">Photo Report Builder</p>
+            </div>
+        </div>
+        <span class="bg-blue-900 text-[10px] px-2 py-0.5 rounded font-mono font-bold text-blue-300">v4.1-Fixed</span>
+    </div>
+
+    <div class="max-w-md mx-auto p-3 space-y-4 pb-24">
+        
+        <div class="bg-white p-4 rounded-xl shadow border border-gray-200 space-y-3">
+            <h2 class="text-xs font-bold text-blue-700 uppercase tracking-wider flex items-center gap-1.5 border-b border-gray-100 pb-2">
+                📋 အချက်အလက်များ ဖြည့်သွင်းရန်
+            </h2>
+
+            <div>
+                <label class="block text-[11px] font-bold text-gray-700 mb-1">၁။ အထပ် ရွေးချယ်ရန် (Floor Level)</label>
+                <select id="floorSelect" class="w-full p-2 border border-gray-300 bg-white rounded-lg text-xs font-semibold focus:outline-none focus:border-blue-500">
+                    <option value="Ground Floor">Ground Floor</option>
+                    <option value="First Floor">First Floor</option>
+                    <option value="Second Floor">Second Floor</option>
+                    <option value="Third Floor">Third Floor</option>
+                    <option value="Fourth Floor">Fourth Floor</option>
+                    <option value="Penthouse Floor">Penthouse Floor</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-[11px] font-bold text-gray-700 mb-1">၂။ အခန်းအမည် သတ်မှတ်ရန် (Room Name)</label>
+                <input type="text" id="roomNameInput" placeholder="ဥပမာ- 4. Reception Room" class="w-full p-2 border border-gray-300 rounded-lg text-xs focus:outline-none focus:border-blue-500">
+            </div>
+
+            <div>
+                <label class="block text-[11px] font-bold text-gray-700 mb-1">၃။ ဓာတ်ပုံများ တင်ရန် (၄ ပုံအထိ တွဲရွေးပါ)</label>
+                <input type="file" id="photoFilesInput" multiple accept="image/*" class="w-full text-xs text-gray-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-[11px] file:font-bold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 border border-dashed border-gray-300 p-2 rounded-lg bg-gray-50 cursor-pointer" onchange="triggerAutoLiveSync()">
+            </div>
+
+            <div>
+                <label class="block text-[11px] font-bold text-blue-800 mb-1">၄။ ပုံအောက်တွင် label ရေးရန် (Remark/Status Text)</label>
+                <input type="text" id="roomRemarkInput" placeholder="ဥပမာ- နံရံမျက်နှာပြင် အချောကိုင်ခြင်း ဆောင်ရွက်ဆဲ" class="w-full p-2 border border-blue-200 bg-blue-50/30 font-semibold rounded-lg text-xs focus:outline-none focus:border-blue-500" oninput="triggerAutoLiveSync()">
+            </div>
+        </div>
+
+        <div class="bg-white p-4 rounded-xl shadow border border-gray-200 space-y-2">
+            <div class="flex justify-between items-center border-b border-gray-100 pb-2">
+                <h2 class="text-xs font-bold text-gray-700 uppercase tracking-wider flex items-center gap-1.5">
+                    🖼️ စာရွက်ပေါ်တွင် ပေါ်မည့်ပုံစံ (Live Preview)
+                </h2>
+                <span class="text-[9px] text-gray-400 font-bold font-mono">No Header Format</span>
+            </div>
+
+            <div class="mobile-preview-box rounded p-3 flex flex-col justify-between shadow-inner overflow-hidden border border-gray-300">
+                <div>
+                    <h5 id="previewFloor" class="text-[7px] font-black text-black uppercase leading-tight border-b [border-width:0.5px] border-gray-200 pb-0.5">Ground Floor</h5>
+                    <h6 id="previewRoom" class="text-[6px] font-bold text-gray-800 mt-0.5">4. Reception Room</h6>
+                </div>
+
+                <div id="previewPhotoGrid" class="grid grid-cols-2 gap-1 h-[68%] my-auto">
+                    <div class="border border-dashed border-gray-300 bg-gray-50 rounded flex items-center justify-center text-[6px] text-gray-400">Photo 1</div>
+                    <div class="border border-dashed border-gray-300 bg-gray-50 rounded flex items-center justify-center text-[6px] text-gray-400">Photo 2</div>
+                    <div class="border border-dashed border-gray-300 bg-gray-50 rounded flex items-center justify-center text-[6px] text-gray-400">Photo 3</div>
+                    <div class="border border-dashed border-gray-300 bg-gray-50 rounded flex items-center justify-center text-[6px] text-gray-400">Photo 4</div>
+                </div>
+
+                <div class="text-center w-full scale-90 mt-1">
+                    <p id="previewCustomRemark" class="text-[6px] font-bold text-gray-900 truncate max-w-[90%] mx-auto">-</p>
+                    <p id="previewAutoLabel" class="text-[4px] font-bold text-gray-500 uppercase tracking-tighter font-mono">GF-RECEPTION ROOM</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-3 shadow-[0_-4px_10px_rgba(0,0,0,0.05)] z-40">
+        <div class="max-w-md mx-auto grid grid-cols-2 gap-2">
+            <button onclick="generateHighResTemplateData()" class="w-full bg-blue-600 text-white font-bold py-2.5 px-4 rounded-xl hover:bg-blue-700 transition text-xs shadow active:scale-95 flex items-center justify-center gap-1">
+                🔄 Live Preview Sync
+            </button>
+            <button onclick="downloadA3LandscapeImage()" class="w-full bg-green-600 text-white font-bold py-2.5 px-4 rounded-xl hover:bg-green-700 transition text-xs shadow active:scale-95 flex items-center justify-center gap-1">
+                💾 JPEG ဓာတ်ပုံသိမ်းမည်
+            </button>
+        </div>
+    </div>
+
+    <div id="loadingOverlay" class="hidden fixed inset-0 bg-black/60 z-50 flex flex-col items-center justify-center text-white font-bold text-xs p-4 text-center">
+        <div class="animate-spin rounded-full h-9 w-9 border-4 border-white border-t-transparent mb-3"></div>
+        A3 Layout တည်ဆောက်နေပါသည် ကိုကို...
+    </div>
+
+
+    <div id="a3HiddenCanvasContainer" class="flex flex-col justify-between">
+        <div>
+            <div class="mb-2">
+                <h2 id="finalFloorTitle" class="text-2xl font-black text-black uppercase tracking-wide border-b-2 border-black pb-1">Ground Floor</h2>
+            </div>
+            <div class="mb-6">
+                <h3 id="finalRoomTitle" class="text-lg font-bold text-gray-900">4. Reception Room</h3>
+                <p class="text-xs text-gray-400 italic mt-0.5">Site Photo :</p>
+            </div>
+
+            <div id="finalPhotoGrid" class="grid grid-cols-2 gap-x-6 gap-y-6 h-[720px]">
+                <div class="border border-dashed border-gray-300 bg-gray-50 rounded flex items-center justify-center text-gray-400 text-xs">Photo 1</div>
+                <div class="border border-dashed border-gray-300 bg-gray-50 rounded flex items-center justify-center text-gray-400 text-xs">Photo 2</div>
+                <div class="border border-dashed border-gray-300 bg-gray-50 rounded flex items-center justify-center text-gray-400 text-xs">Photo 3</div>
+                <div class="border border-dashed border-gray-300 bg-gray-50 rounded flex items-center justify-center text-gray-400 text-xs">Photo 4</div>
+            </div>
+        </div>
+
+        <div class="text-center w-full mb-4">
+            <p id="finalCustomRemark" class="text-xl font-bold text-gray-900 tracking-wide leading-relaxed block max-w-5xl mx-auto"></p>
+            <p id="finalAutoLabel" class="text-sm font-semibold text-gray-600 tracking-widest mt-2 uppercase font-mono"></p>
+        </div>
+    </div>
+
+
+    <script>
+        // High-Performance Image Resizer (Perfect Standard 2D Canvas context)
+        function compressAndResizeImage(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = (event) => {
+                    const img = new Image();
+                    img.src = event.target.result;
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        const MAX_WIDTH = 900; 
+                        let width = img.width;
+                        let height = img.height;
+
+                        if (width > MAX_WIDTH) {
+                            height = Math.round((height * MAX_WIDTH) / width);
+                            width = MAX_WIDTH;
+                        }
+                        canvas.width = width;
+                        canvas.height = height;
+
+                        // FIXED: Exact corrected rendering engine instantiation context
+                        const ctx2d = canvas.getContext('2d');
+                        ctx2d.drawImage(img, 0, 0, width, height);
+                        resolve(canvas.toDataURL('image/jpeg', 0.85));
+                    };
+                    img.onerror = err => reject(err);
+                };
+                reader.onerror = err => reject(err);
+            });
+        }
+
+        function getFloorShortCode(floorName) {
+            if (floorName.includes("Ground")) return "GF";
+            if (floorName.includes("First")) return "1F";
+            if (floorName.includes("Second")) return "2F";
+            if (floorName.includes("Third")) return "3F";
+            if (floorName.includes("Fourth")) return "4F";
+            if (floorName.includes("Penthouse")) return "PH";
+            return "Site";
+        }
+
+        function triggerAutoLiveSync() {
+            const floor = document.getElementById('floorSelect').value;
+            const roomName = document.getElementById('roomNameInput').value.trim() || "4. Reception Room";
+            const customRemark = document.getElementById('roomRemarkInput').value.trim() || "-";
+
+            document.getElementById('previewFloor').innerText = floor;
+            document.getElementById('previewRoom').innerText = roomName;
+            document.getElementById('previewCustomRemark').innerText = customRemark;
+
+            const floorCode = getFloorShortCode(floor);
+            const pureRoomTitle = roomName.replace(/^\d+\.\s*/, '');
+            document.getElementById('previewAutoLabel').innerText = `${floorCode}-${pureRoomTitle}`;
+        }
+
+        async function generateHighResTemplateData() {
+            const floor = document.getElementById('floorSelect').value;
+            const roomName = document.getElementById('roomNameInput').value.trim();
+            const customRemark = document.getElementById('roomRemarkInput').value.trim();
+            const fileInput = document.getElementById('photoFilesInput');
+
+            if (!roomName) {
+                alert("ကိုကိုရေ... အခန်းအမည် အရင်ရိုက်ထည့်ပေးပါနော်။");
+                return false;
+            }
+
+            document.getElementById('loadingOverlay').classList.remove('hidden');
+            triggerAutoLiveSync();
+
+            document.getElementById('finalFloorTitle').innerText = floor;
+            document.getElementById('finalRoomTitle').innerText = roomName;
+            document.getElementById('finalCustomRemark').innerText = customRemark ? customRemark : "";
+            
+            const floorCode = getFloorShortCode(floor);
+            const pureRoomTitle = roomName.replace(/^\d+\.\s*/, '');
+            document.getElementById('finalAutoLabel').innerText = `${floorCode}-${pureRoomTitle}`;
+
+            const mobilePreviewGrid = document.getElementById('previewPhotoGrid');
+            const hiddenA3Grid = document.getElementById('finalPhotoGrid');
+            
+            mobilePreviewGrid.innerHTML = '';
+            hiddenA3Grid.innerHTML = '';
+
+            const totalFiles = Math.min(fileInput.files.length, 4);
+
+            if (totalFiles === 0) {
+                for(let k=0; k<4; k++) {
+                    hiddenA3Grid.innerHTML += `<div class="border border-dashed border-gray-300 bg-gray-50 rounded flex items-center justify-center text-gray-400 text-xs">Photo ${k+1}</div>`;
+                    mobilePreviewGrid.innerHTML += `<div class="border border-dashed border-gray-300 bg-gray-50 rounded flex items-center justify-center text-[6px] text-gray-400">Photo ${k+1}</div>`;
+                }
+                document.getElementById('loadingOverlay').classList.add('hidden');
+                return true;
+            }
+
+            for (let i = 0; i < totalFiles; i++) {
+                try {
+                    const compressedB64 = await compressAndResizeImage(fileInput.files[i]);
+
+                    const previewWrapper = document.createElement('div');
+                    previewWrapper.className = 'w-full h-full rounded overflow-hidden bg-black border [border-width:0.5px] border-gray-200';
+                    const previewImg = document.createElement('img');
+                    previewImg.src = compressedB64;
+                    previewImg.className = 'w-full h-full object-cover';
+                    previewWrapper.appendChild(previewImg);
+                    mobilePreviewGrid.appendChild(previewWrapper);
+
+                    const finalWrapper = document.createElement('div');
+                    finalWrapper.className = 'w-full h-full border border-gray-300 rounded shadow-sm overflow-hidden bg-black';
+                    const finalImg = document.createElement('img');
+                    finalImg.src = compressedB64;
+                    finalImg.className = 'w-full h-full object-cover';
+                    finalWrapper.appendChild(finalImg);
+                    hiddenA3Grid.appendChild(finalWrapper);
+
+                } catch (err) {
+                    console.error(err);
+                }
+            }
+
+            if (totalFiles < 4) {
+                for (let j = totalFiles; j < 4; j++) {
+                    hiddenA3Grid.innerHTML += `<div class="border border-dashed border-gray-300 bg-gray-50 rounded flex items-center justify-center text-gray-400 text-xs">No Photo</div>`;
+                    mobilePreviewGrid.innerHTML += `<div class="border border-dashed border-gray-300 bg-gray-50 rounded flex items-center justify-center text-[6px] text-gray-400">No Photo</div>`;
+                }
+            }
+
+            document.getElementById('loadingOverlay').classList.add('hidden');
+            return true;
+        }
+
+        async function downloadA3LandscapeImage() {
+            const isReady = await generateHighResTemplateData();
+            if (!isReady) return;
+
+            const roomName = document.getElementById('roomNameInput').value.trim() || "A3_Page";
+            const floor = document.getElementById('floorSelect').value;
+            const targetWorkspace = document.getElementById('a3HiddenCanvasContainer');
+
+            setTimeout(() => {
+                html2canvas(targetWorkspace, {
+                    scale: 1.5, 
+                    useCORS: true,
+                    logging: false,
+                    backgroundColor: "#ffffff"
+                }).then(canvas => {
+                    const imageURI = canvas.toDataURL("image/jpeg", 0.9);
+                    const link = document.createElement('a');
+                    link.download = `A3_Clean_Report_${floor}_${roomName.replace(/\s+/g, '_')}.jpg`;
+                    link.href = imageURI;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                }).catch(err => {
+                    alert("ဓာတ်ပုံထုတ်ယူရာတွင် အမှားအယွင်းရှိပါသည် ကိုကို။");
+                    console.error(err);
+                });
+            }, 300);
+        }
+    </script>
+</body>
+</html>
+
+  <script>
+
+  </script>
+</body>
+</html>

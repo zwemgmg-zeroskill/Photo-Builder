@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>King Report A3 - Pure Auto Overwrite</title>
+    <title>Zwe Maung Maung - Perfect Report v5.0</title>
     <style>
         /* Modern Native App Style Reset */
         * {
@@ -106,7 +106,7 @@
             border-color: #bbf7d0;
             font-weight: 600;
         }
-        /* Mobile Interactive Preview Box */
+        /* Mobile Interactive Preview Box (Exact A3 Layout) */
         .mobile-preview-box {
             aspect-ratio: 1584 / 1123;
             width: 100%;
@@ -133,7 +133,7 @@
             color: #1e293b;
             margin-top: 2px;
         }
-        /* Symmetrical 2x2 Image Matrix */
+        /* Symmetrical 2x2 Image Matrix Canvas HTML5 Core */
         .preview-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -142,21 +142,14 @@
             margin: auto 0;
             background: #ffffff !important;
         }
-        /* Overlaid Grid Slots */
-        .img-wrapper-bg {
+        /* HTML5 Canvas tags to guarantee full canvas image processing stability */
+        .canvas-responsive-slot {
             width: 100%;
             height: 100%;
             border-radius: 4px;
             border: 0.5px solid #cbd5e1;
-            background-color: #f1f5f9; /* Standard soft background */
-            background-position: center !important;
-            background-size: cover !important;
-            background-repeat: no-repeat !important;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #94a3b8;
-            font-size: 6px;
+            background-color: #f1f5f9;
+            display: block;
         }
         .preview-footer {
             text-align: center;
@@ -240,8 +233,8 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* ================= HARDWARE CANVAS WORKSPACE (WHITE BACKGROUND) ================= */
-        #a3HiddenCanvasContainer {
+        /* ================= HARDWARE CORE ENGINE WORKSPACE (HIDDEN CANVAS) ================= */
+        #a3MasterContainerToCapture {
             position: absolute;
             left: -9999px;
             top: -9999px;
@@ -277,20 +270,13 @@
             height: 720px;
             background: #ffffff !important;
         }
-        .a3-img-box-bg {
+        .a3-canvas-hardware-slot {
             width: 100%;
             height: 100%;
             border-radius: 6px;
             border: 1px solid #cbd5e1;
             background-color: #f8fafc;
-            background-position: center !important;
-            background-size: cover !important;
-            background-repeat: no-repeat !important;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #94a3b8;
-            font-size: 14px;
+            display: block;
         }
         .a3-footer {
             text-align: center;
@@ -325,7 +311,7 @@
             <div class="nav-title">Zwe Maung Maung</div>
             <div class="nav-subtitle">Report Builder</div>
         </div>
-        <div class="nav-tag">v4.8-AutoOverwrite</div>
+        <div class="nav-tag">v5.0-CanvasOverwritten</div>
     </div>
 
     <div class="container">
@@ -350,8 +336,8 @@
             </div>
 
             <div class="form-group">
-                <label class="form-label" style="color:#1d4ed8; font-weight: 900;">၃။ ဓာတ်ပုံများ တင်ရန် (ပုံရွေးတာနဲ့ ချက်ချင်း Overwrite ပေါ်ပါမည်)</label>
-                <input type="file" id="photoFilesInput" multiple accept="image/*" class="form-control" onchange="processImagesAutomatically()">
+                <label class="form-label" style="color:#1d4ed8; font-weight: 900;">၃။ ဓာတ်ပုံများ တင်ရန် (ပုံရွေးတာနဲ့ အကွက်ထဲ တိုက်ရိုက် Overwrite အုပ်ပါမည်)</label>
+                <input type="file" id="photoFilesInput" multiple accept="image/*" class="form-control" onchange="processCanvasImagesAutomatically()">
             </div>
 
             <div class="form-group">
@@ -369,11 +355,11 @@
                     <div class="preview-room" id="previewRoom">4. M&E Control Room</div>
                 </div>
 
-                <div class="preview-grid" id="previewPhotoGrid">
-                    <div class="img-wrapper-bg" id="pSlot0">Photo 1</div>
-                    <div class="img-wrapper-bg" id="pSlot1">Photo 2</div>
-                    <div class="img-wrapper-bg" id="pSlot2">Photo 3</div>
-                    <div class="img-wrapper-bg" id="pSlot3">Photo 4</div>
+                <div class="preview-grid">
+                    <canvas id="pCanvas0" class="canvas-responsive-slot"></canvas>
+                    <canvas id="pCanvas1" class="canvas-responsive-slot"></canvas>
+                    <canvas id="pCanvas2" class="canvas-responsive-slot"></canvas>
+                    <canvas id="pCanvas3" class="canvas-responsive-slot"></canvas>
                 </div>
 
                 <div class="preview-footer">
@@ -396,16 +382,16 @@
     </div>
 
 
-    <div id="a3HiddenCanvasContainer">
+    <div id="a3MasterContainerToCapture">
         <div>
             <div class="a3-title" id="finalFloorTitle">Ground Floor</div>
             <div class="a3-room" id="finalRoomTitle">4. M&E Control Room</div>
 
-            <div class="a3-grid" id="finalPhotoGrid">
-                <div class="a3-placeholder" id="fSlot0">Photo 1</div>
-                <div class="a3-placeholder" id="fSlot1">Photo 2</div>
-                <div class="a3-placeholder">Photo 3</div>
-                <div class="a3-placeholder">Photo 4</div>
+            <div class="a3-grid">
+                <canvas id="fCanvas0" class="a3-canvas-hardware-slot" width="690" height="480"></canvas>
+                <canvas id="fCanvas1" class="a3-canvas-hardware-slot" width="690" height="480"></canvas>
+                <canvas id="fCanvas2" class="a3-canvas-hardware-slot" width="690" height="480"></canvas>
+                <canvas id="fCanvas3" class="a3-canvas-hardware-slot" width="690" height="480"></canvas>
             </div>
         </div>
 
@@ -417,14 +403,9 @@
 
 
     <script>
-        function readFileAsDataURL(file) {
-            return new Promise((resolve) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = (event) => resolve(event.target.result);
-                reader.onerror = () => resolve("");
-            });
-        }
+        window.onload = function() {
+            clearAllCanvasesWithDefaultPlaceholder();
+        };
 
         function getFloorShortCode(floorName) {
             if (floorName.includes("Ground")) return "GF";
@@ -436,13 +417,12 @@
             return "Site";
         }
 
-        // Live Dynamic Text Auto Sync
+        // Live Text Content Syncer
         function triggerAutoLiveSync() {
             const floor = document.getElementById('floorSelect').value;
             const roomName = document.getElementById('roomNameInput').value.trim() || "4. M&E Control Room";
             const customRemark = document.getElementById('roomRemarkInput').value.trim() || "-";
 
-            // Sync Preview
             document.getElementById('previewFloor').innerText = floor;
             document.getElementById('previewRoom').innerText = roomName;
             document.getElementById('previewCustomRemark').innerText = customRemark;
@@ -451,59 +431,98 @@
             const pureRoomTitle = roomName.replace(/^\d+\.\s*/, '');
             document.getElementById('previewAutoLabel').innerText = `${floorCode}-${pureRoomTitle}`;
 
-            // Sync Hidden Canvas
             document.getElementById('finalFloorTitle').innerText = floor;
             document.getElementById('finalRoomTitle').innerText = roomName;
             document.getElementById('finalCustomRemark').innerText = customRemark ? customRemark : "";
             document.getElementById('finalAutoLabel').innerText = `${floorCode}-${pureRoomTitle}`;
         }
 
-        // CRITICAL FIXED: Instant Auto-Overwrite Image on Select Action
-        async function processImagesAutomatically() {
+        // Clear and render default safe layout styles inside canvas contexts
+        function clearAllCanvasesWithDefaultPlaceholder() {
+            for (let i = 0; i < 4; i++) {
+                const pCtx = document.getElementById(`pCanvas${i}`).getContext('2d');
+                const fCtx = document.getElementById(`fCanvas${i}`).getContext('2d');
+
+                // Set soft gray background layout values
+                pCtx.fillStyle = "#f1f5f9";
+                pCtx.fillRect(0, 0, 300, 150);
+                pCtx.fillStyle = "#94a3b8";
+                pCtx.font = "14px sans-serif";
+                pCtx.textAlign = "center";
+                pCtx.textBaseline = "middle";
+                pCtx.fillText(`Photo ${i+1}`, 150, 75);
+
+                fCtx.fillStyle = "#f8fafc";
+                fCtx.fillRect(0, 0, 690, 480);
+                fCtx.fillStyle = "#94a3b8";
+                fCtx.font = "24px sans-serif";
+                fCtx.textAlign = "center";
+                fCtx.textBaseline = "middle";
+                fCtx.fillText(`Photo ${i+1}`, 345, 240);
+            }
+        }
+
+        // Draw and Overwrite target image cleanly over the canvas viewport matrices
+        function drawImageOverlaidOnCanvas(canvasId, file) {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = function(event) {
+                    const img = new Image();
+                    img.src = event.target.result;
+                    img.onload = function() {
+                        const canvas = document.getElementById(canvasId);
+                        const ctx = canvas.getContext('2d');
+
+                        // Set canvas logical coordinates to match bounding rectangles dynamically
+                        if(canvasId.startsWith('p')) {
+                            canvas.width = img.width > 800 ? 800 : img.width;
+                            canvas.height = Math.round((img.height * canvas.width) / img.width);
+                        }
+
+                        const w = canvas.width;
+                        const h = canvas.height;
+
+                        // High performance centered cover drawing algorithm context
+                        ctx.clearRect(0, 0, w, h);
+                        const imgRatio = img.width / img.height;
+                        const canvasRatio = w / h;
+                        let sx, sy, sw, sh;
+
+                        if (imgRatio > canvasRatio) {
+                            sh = img.height;
+                            sw = sh * canvasRatio;
+                            sx = (img.width - sw) / 2;
+                            sy = 0;
+                        } else {
+                            sw = img.width;
+                            sh = sw / canvasRatio;
+                            sx = 0;
+                            sy = (img.height - sh) / 2;
+                        }
+
+                        ctx.drawImage(img, sx, sy, sw, sh, 0, 0, w, h);
+                        resolve();
+                    };
+                };
+            });
+        }
+
+        // CRITICAL INJECTION: Overwrite action block executed instantly on file choose
+        async function processCanvasImagesAutomatically() {
             const fileInput = document.getElementById('photoFilesInput');
             const totalFiles = Math.min(fileInput.files.length, 4);
 
-            // Reset Grids to fresh templates
-            const mobilePreviewGrid = document.getElementById('previewPhotoGrid');
-            const hiddenA3Grid = document.getElementById('finalPhotoGrid');
-            mobilePreviewGrid.innerHTML = '';
-            hiddenA3Grid.innerHTML = '';
+            clearAllCanvasesWithDefaultPlaceholder();
 
-            if (totalFiles === 0) {
-                for(let k=0; k<4; k++) {
-                    mobilePreviewGrid.innerHTML += `<div class="img-wrapper-bg">Photo ${k+1}</div>`;
-                    hiddenA3Grid.innerHTML += `<div class="a3-placeholder">Photo ${k+1}</div>`;
-                }
-                return;
-            }
+            if (totalFiles === 0) return;
 
-            // Read and instantly push dynamic style overwrite layers
             for (let i = 0; i < totalFiles; i++) {
                 const file = fileInput.files[i];
-                const base64Data = await readFileAsDataURL(file);
-
-                if (base64Data) {
-                    // Overwrite Preview Slot
-                    const pSlot = document.createElement('div');
-                    pSlot.className = 'img-wrapper-bg';
-                    pSlot.style.setProperty('background-image', `url("${base64Data}")`, 'important');
-                    mobilePreviewGrid.appendChild(pSlot);
-
-                    // Overwrite High-Res Export Slot
-                    const fSlot = document.createElement('div');
-                    fBoxClassName = 'a3-img-box-bg';
-                    fSlot.className = 'a3-img-box-bg';
-                    fSlot.style.setProperty('background-image', `url("${base64Data}")`, 'important');
-                    hiddenA3Grid.appendChild(fSlot);
-                }
-            }
-
-            // Append empty placeholders for remainder slots
-            if (totalFiles < 4) {
-                for (let j = totalFiles; j < 4; j++) {
-                    mobilePreviewGrid.innerHTML += `<div class="img-wrapper-bg">No Photo</div>`;
-                    hiddenA3Grid.innerHTML += `<div class="a3-img-box-bg">No Photo</div>`;
-                }
+                // Overwrite App View Screen Preview Box matrices instantly
+                await drawImageOverlaidOnCanvas(`pCanvas${i}`, file);
+                // Overwrite A3 Hardware Capture matrices instantly
+                await drawImageOverlaidOnCanvas(`fCanvas${i}`, file);
             }
             triggerAutoLiveSync();
         }
@@ -519,10 +538,10 @@
             triggerAutoLiveSync();
             await new Promise(r => setTimeout(r, 200));
 
-            const targetWorkspace = document.getElementById('a3HiddenCanvasContainer');
+            const targetWorkspace = document.getElementById('a3MasterContainerToCapture');
 
             html2canvas(targetWorkspace, {
-                scale: 2, 
+                scale: 1.5, 
                 useCORS: true,
                 allowTaint: true,
                 backgroundColor: "#ffffff",

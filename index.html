@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>King Report A3 - Absolute Fix</title>
+    <title>King Report A3 - Background Cover Fix</title>
     <style>
         /* Modern Native App Style Reset */
         * {
@@ -142,28 +142,21 @@
             margin: auto 0;
             background: #ffffff !important;
         }
-        .placeholder-box {
-            border: 0.5px dashed #cbd5e1;
-            background: #f8fafc;
+        /* FIXED: Pure White background boxes instead of images tags to prevent breaking icons */
+        .img-wrapper-bg {
+            width: 100%;
+            height: 100%;
             border-radius: 4px;
+            border: 0.5px solid #cbd5e1;
+            background-color: #f8fafc;
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
             display: flex;
             align-items: center;
             justify-content: center;
             color: #94a3b8;
             font-size: 6px;
-        }
-        .img-wrapper {
-            width: 100%;
-            height: 100%;
-            border-radius: 4px;
-            overflow: hidden;
-            background: #ffffff !important; /* FIXED: Change from black to white */
-            border: 0.5px solid #e2e8f0;
-        }
-        .img-wrapper img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
         }
         .preview-footer {
             text-align: center;
@@ -287,28 +280,20 @@
             height: 720px;
             background: #ffffff !important;
         }
-        .a3-placeholder {
-            border: 2px dashed #cbd5e1;
-            background: #f8fafc;
+        .a3-img-box-bg {
+            width: 100%;
+            height: 100%;
             border-radius: 6px;
+            border: 1px solid #cbd5e1;
+            background-color: #f8fafc;
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
             display: flex;
             align-items: center;
             justify-content: center;
             color: #94a3b8;
             font-size: 14px;
-        }
-        .a3-img-box {
-            width: 100%;
-            height: 100%;
-            border-radius: 6px;
-            overflow: hidden;
-            background: #ffffff !important; /* FIXED: Change from black to white */
-            border: 1px solid #cbd5e1;
-        }
-        .a3-img-box img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
         }
         .a3-footer {
             text-align: center;
@@ -336,7 +321,6 @@
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
-    
 <body>
 
     <div class="nav-bar">
@@ -344,7 +328,7 @@
             <div class="nav-title">Zwe Maung Maung</div>
             <div class="nav-subtitle">Report Builder</div>
         </div>
-        <div class="nav-tag">v4.5-AbsoluteFix</div>
+        <div class="nav-tag">v4.6-BackgroundCover</div>
     </div>
 
     <div class="container">
@@ -389,10 +373,10 @@
                 </div>
 
                 <div class="preview-grid" id="previewPhotoGrid">
-                    <div class="placeholder-box">Photo 1</div>
-                    <div class="placeholder-box">Photo 2</div>
-                    <div class="placeholder-box">Photo 3</div>
-                    <div class="placeholder-box">Photo 4</div>
+                    <div class="img-wrapper-bg">Photo 1</div>
+                    <div class="img-wrapper-bg">Photo 2</div>
+                    <div class="img-wrapper-bg">Photo 3</div>
+                    <div class="img-wrapper-bg">Photo 4</div>
                 </div>
 
                 <div class="preview-footer">
@@ -437,6 +421,16 @@
 
 
     <script>
+        // High Speed FileReader to get safe DataURL
+        function readFileAsDataURL(file) {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = (event) => resolve(event.target.result);
+                reader.onerror = () => resolve("");
+            });
+        }
+
         function getFloorShortCode(floorName) {
             if (floorName.includes("Ground")) return "GF";
             if (floorName.includes("First")) return "1F";
@@ -459,15 +453,6 @@
             const floorCode = getFloorShortCode(floor);
             const pureRoomTitle = roomName.replace(/^\d+\.\s*/, '');
             document.getElementById('previewAutoLabel').innerText = `${floorCode}-${pureRoomTitle}`;
-        }
-
-        // Active list to manage revocation of blobs
-        let activeBlobURLs = [];
-        function clearPreviousBlobs() {
-            activeBlobURLs.forEach(url => {
-                try { window.URL.revokeObjectURL(url); } catch(e){}
-            });
-            activeBlobURLs = [];
         }
 
         async function generateHighResTemplateData() {
@@ -499,48 +484,51 @@
             
             mobilePreviewGrid.innerHTML = '';
             hiddenA3Grid.innerHTML = '';
-            clearPreviousBlobs();
 
             const totalFiles = Math.min(fileInput.files.length, 4);
 
             if (totalFiles === 0) {
                 for(let k=0; k<4; k++) {
-                    hiddenA3Grid.innerHTML += `<div class="a3-placeholder" style="background:#f8fafc; color:#94a3b8;">Photo ${k+1}</div>`;
-                    mobilePreviewGrid.innerHTML += `<div class="placeholder-box">Photo ${k+1}</div>`;
+                    hiddenA3Grid.innerHTML += `<div class="a3-img-box-bg">Photo ${k+1}</div>`;
+                    mobilePreviewGrid.innerHTML += `<div class="img-wrapper-bg">Photo ${k+1}</div>`;
                 }
                 document.getElementById('loadingOverlay').style.display = 'none';
                 return true;
             }
 
-            // Direct Native Object Rendering bypassing FileReader Security blocks
+            // Loop and inject style backgrounds directly to prevent broken image icons completely
             for (let i = 0; i < totalFiles; i++) {
                 try {
                     const file = fileInput.files[i];
-                    const nativeBlobURL = window.URL.createObjectURL(file);
-                    activeBlobURLs.push(nativeBlobURL);
+                    const base64Data = await readFileAsDataURL(file);
 
-                    const previewWrapper = document.createElement('div');
-                    previewWrapper.className = 'img-wrapper';
-                    const previewImg = document.createElement('img');
-                    previewImg.src = nativeBlobURL;
-                    previewWrapper.appendChild(previewImg);
-                    mobilePreviewGrid.appendChild(previewWrapper);
+                    if (base64Data) {
+                        // 1. Mobile Preview Box (Background Image Cover Mode)
+                        const previewBox = document.createElement('div');
+                        previewBox.className = 'img-wrapper-bg';
+                        previewBox.style.backgroundImage = `url("${base64Data}")`;
+                        mobilePreviewGrid.appendChild(previewBox);
 
-                    const finalWrapper = document.createElement('div');
-                    finalWrapper.className = 'a3-img-box';
-                    const finalImg = document.createElement('img');
-                    finalImg.src = nativeBlobURL;
-                    finalWrapper.appendChild(finalImg);
-                    hiddenA3Grid.appendChild(finalWrapper);
+                        // 2. High-Res A3 Canvas Box (Background Image Cover Mode)
+                        const finalBox = document.createElement('div');
+                        finalBox.className = 'a3-img-box-bg';
+                        finalBox.style.backgroundImage = `url("${base64Data}")`;
+                        hiddenA3Grid.appendChild(finalBox);
+                    } else {
+                        // Fallback if read fails
+                        hiddenA3Grid.innerHTML += `<div class="a3-img-box-bg">Error Photo</div>`;
+                        mobilePreviewGrid.innerHTML += `<div class="img-wrapper-bg">Error Photo</div>`;
+                    }
                 } catch (e) {
                     console.error(e);
                 }
             }
 
+            // Fill empty slots if less than 4 photos
             if (totalFiles < 4) {
                 for (let j = totalFiles; j < 4; j++) {
-                    hiddenA3Grid.innerHTML += `<div class="a3-placeholder" style="background:#f8fafc; color:#94a3b8;">No Photo</div>`;
-                    mobilePreviewGrid.innerHTML += `<div class="placeholder-box">No Photo</div>`;
+                    hiddenA3Grid.innerHTML += `<div class="a3-img-box-bg">No Photo</div>`;
+                    mobilePreviewGrid.innerHTML += `<div class="img-wrapper-bg">No Photo</div>`;
                 }
             }
 
@@ -555,10 +543,6 @@
             const roomName = document.getElementById('roomNameInput').value.trim() || "A3_Page";
             const floor = document.getElementById('floorSelect').value;
             const targetWorkspace = document.getElementById('a3HiddenCanvasContainer');
-
-            // Force override settings before html2canvas captures
-            targetWorkspace.style.backgroundColor = "#ffffff";
-            targetWorkspace.style.background = "#ffffff";
 
             setTimeout(() => {
                 html2canvas(targetWorkspace, {

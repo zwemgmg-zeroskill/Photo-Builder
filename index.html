@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>King Report A3 - Background Cover Fix</title>
+    <title>King Report A3 - Direct Inject Fix</title>
     <style>
         /* Modern Native App Style Reset */
         * {
@@ -142,16 +142,16 @@
             margin: auto 0;
             background: #ffffff !important;
         }
-        /* FIXED: Pure White background boxes instead of images tags to prevent breaking icons */
+        /* Dynamic Background-Overlaid Image Slots */
         .img-wrapper-bg {
             width: 100%;
             height: 100%;
             border-radius: 4px;
             border: 0.5px solid #cbd5e1;
             background-color: #f8fafc;
-            background-position: center;
-            background-size: cover;
-            background-repeat: no-repeat;
+            background-position: center !important;
+            background-size: cover !important;
+            background-repeat: no-repeat !important;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -286,9 +286,9 @@
             border-radius: 6px;
             border: 1px solid #cbd5e1;
             background-color: #f8fafc;
-            background-position: center;
-            background-size: cover;
-            background-repeat: no-repeat;
+            background-position: center !important;
+            background-size: cover !important;
+            background-repeat: no-repeat !important;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -328,7 +328,7 @@
             <div class="nav-title">Zwe Maung Maung</div>
             <div class="nav-subtitle">Report Builder</div>
         </div>
-        <div class="nav-tag">v4.6-BackgroundCover</div>
+        <div class="nav-tag">v4.7-DirectInject</div>
     </div>
 
     <div class="container">
@@ -421,7 +421,6 @@
 
 
     <script>
-        // High Speed FileReader to get safe DataURL
         function readFileAsDataURL(file) {
             return new Promise((resolve) => {
                 const reader = new FileReader();
@@ -482,6 +481,7 @@
             const mobilePreviewGrid = document.getElementById('previewPhotoGrid');
             const hiddenA3Grid = document.getElementById('finalPhotoGrid');
             
+            // Clear content completely before rendering
             mobilePreviewGrid.innerHTML = '';
             hiddenA3Grid.innerHTML = '';
 
@@ -496,35 +496,36 @@
                 return true;
             }
 
-            // Loop and inject style backgrounds directly to prevent broken image icons completely
+            // FIXED: Directly build and append new dynamic blocks to ensure inline style properties override background boxes instantly
             for (let i = 0; i < totalFiles; i++) {
                 try {
                     const file = fileInput.files[i];
                     const base64Data = await readFileAsDataURL(file);
 
                     if (base64Data) {
-                        // 1. Mobile Preview Box (Background Image Cover Mode)
-                        const previewBox = document.createElement('div');
-                        previewBox.className = 'img-wrapper-bg';
-                        previewBox.style.backgroundImage = `url("${base64Data}")`;
-                        mobilePreviewGrid.appendChild(previewBox);
+                        // 1. Build and Inject Mobile Preview Box Element
+                        const pBox = document.createElement('div');
+                        pBox.className = 'img-wrapper-bg';
+                        pBox.style.setProperty('background-image', `url("${base64Data}")`, 'important');
+                        pBox.innerHTML = ''; // Clear text if any
+                        mobilePreviewGrid.appendChild(pBox);
 
-                        // 2. High-Res A3 Canvas Box (Background Image Cover Mode)
-                        const finalBox = document.createElement('div');
-                        finalBox.className = 'a3-img-box-bg';
-                        finalBox.style.backgroundImage = `url("${base64Data}")`;
-                        hiddenA3Grid.appendChild(finalBox);
+                        // 2. Build and Inject High-Res A3 Target Element
+                        const fBox = document.createElement('div');
+                        fBox.className = 'a3-img-box-bg';
+                        fBox.style.setProperty('background-image', `url("${base64Data}")`, 'important');
+                        fBox.innerHTML = ''; // Clear text if any
+                        hiddenA3Grid.appendChild(fBox);
                     } else {
-                        // Fallback if read fails
-                        hiddenA3Grid.innerHTML += `<div class="a3-img-box-bg">Error Photo</div>`;
-                        mobilePreviewGrid.innerHTML += `<div class="img-wrapper-bg">Error Photo</div>`;
+                        hiddenA3Grid.innerHTML += `<div class="a3-img-box-bg">Error</div>`;
+                        mobilePreviewGrid.innerHTML += `<div class="img-wrapper-bg">Error</div>`;
                     }
                 } catch (e) {
                     console.error(e);
                 }
             }
 
-            // Fill empty slots if less than 4 photos
+            // Fill leftover grid boxes dynamically if less than 4 files
             if (totalFiles < 4) {
                 for (let j = totalFiles; j < 4; j++) {
                     hiddenA3Grid.innerHTML += `<div class="a3-img-box-bg">No Photo</div>`;
@@ -567,4 +568,5 @@
         }
     </script>
 </body>
-</html>
+    </html>
+    

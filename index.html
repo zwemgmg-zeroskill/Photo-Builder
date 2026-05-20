@@ -1,24 +1,258 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>gggg.html</title>
-  <style>
-
-  </style>
-</head>
-<body>
-<!DOCTYPE html>
-<html lang="en">
-<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>King Report A3 - Ultra Fast Fixed</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <title>King Report A3 - Premium Fixed</title>
     <style>
-        /* Hidden high-res A3 matrix canvas container to avoid zooming issues on phones */
+        /* Modern Native App Style Reset - No External CSS Needed */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        body {
+            background-color: #f1f5f9;
+            color: #334155;
+            padding-bottom: 100px;
+        }
+        /* Top Premium Navigation Bar */
+        .nav-bar {
+            background-color: #1d4ed8;
+            color: white;
+            padding: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+        .nav-title {
+            font-size: 14px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .nav-subtitle {
+            font-size: 10px;
+            color: #bfdbfe;
+        }
+        .nav-tag {
+            background-color: #1e3a8a;
+            color: #93c5fd;
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        /* App Layout Container */
+        .container {
+            max-width: 450px;
+            margin: 16px auto;
+            padding: 0 12px;
+        }
+        /* Premium Cards */
+        .card {
+            background: white;
+            padding: 18px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            margin-bottom: 16px;
+        }
+        .card-title {
+            font-size: 12px;
+            font-weight: bold;
+            color: #1d4ed8;
+            text-transform: uppercase;
+            border-bottom: 1px solid #f1f5f9;
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+        }
+        /* Form Inputs */
+        .form-group {
+            margin-bottom: 14px;
+        }
+        .form-label {
+            display: block;
+            font-size: 11px;
+            font-weight: bold;
+            color: #475569;
+            margin-bottom: 5px;
+        }
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 12px;
+            outline: none;
+            background: white;
+        }
+        .form-control:focus {
+            border-color: #1d4ed8;
+        }
+        /* Special Input Styling */
+        input[type="file"] {
+            padding: 8px;
+            background: #f8fafc;
+            border-style: dashed;
+            cursor: pointer;
+        }
+        .remark-input {
+            background-color: #f0fdf4;
+            border-color: #bbf7d0;
+            font-weight: 600;
+        }
+        /* Mobile Interactive Preview Box (Exact A3 Ratio Frame) */
+        .mobile-preview-box {
+            aspect-ratio: 1584 / 1123;
+            width: 100%;
+            background: white;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+        }
+        .preview-floor {
+            font-size: 7px;
+            font-weight: 900;
+            color: black;
+            text-transform: uppercase;
+            border-bottom: 0.5px solid #e2e8f0;
+            padding-bottom: 2px;
+        }
+        .preview-room {
+            font-size: 6px;
+            font-weight: bold;
+            color: #1e293b;
+            margin-top: 2px;
+        }
+        /* Symmetrical 2x2 Image Matrix */
+        .preview-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4px;
+            height: 65%;
+            margin: auto 0;
+        }
+        .placeholder-box {
+            border: 0.5px dashed #cbd5e1;
+            background: #f8fafc;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #94a3b8;
+            font-size: 6px;
+        }
+        .img-wrapper {
+            width: 100%;
+            height: 100%;
+            border-radius: 4px;
+            overflow: hidden;
+            background: black;
+            border: 0.5px solid #e2e8f0;
+        }
+        .img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .preview-footer {
+            text-align: center;
+            width: 100%;
+            transform: scale(0.9);
+            margin-top: 4px;
+        }
+        .preview-remark {
+            font-size: 6px;
+            font-weight: bold;
+            color: #0f172a;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .preview-label {
+            font-size: 4px;
+            font-weight: bold;
+            color: #64748b;
+            text-transform: uppercase;
+            margin-top: 1px;
+            font-family: monospace;
+        }
+        /* Sticky Footer Action Buttons UI */
+        .footer-actions {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid #e2e8f0;
+            padding: 12px;
+            box-shadow: 0 -4px 10px rgba(0,0,0,0.05);
+            z-index: 40;
+        }
+        .button-group {
+            max-width: 450px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+        .btn {
+            width: 100%;
+            border: none;
+            color: white;
+            font-weight: bold;
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 12px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+        .btn-blue { background-color: #2563eb; }
+        .btn-green { background-color: #16a34a; }
+        .btn:active { transform: scale(0.97); }
+        
+        /* Loading Mask Overlay */
+        .overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 100;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            text-align: center;
+        }
+        .spinner {
+            width: 32px;
+            height: 32px;
+            border: 4px solid white;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 10px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ================= HARDWARE CANVAS WORKSPACE (HIDDEN) ================= */
         #a3HiddenCanvasContainer {
             position: absolute;
             left: -9999px;
@@ -27,41 +261,97 @@
             height: 1123px;
             background-color: #ffffff;
             padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
             box-sizing: border-box;
         }
-        /* Mobile View Preview Box Aspect Ratio styling */
-        .mobile-preview-box {
-            aspect-ratio: 1584 / 1123;
+        .a3-title {
+            font-size: 24px;
+            font-weight: 900;
+            color: black;
+            text-transform: uppercase;
+            border-bottom: 3px solid black;
+            padding-bottom: 4px;
+            margin-bottom: 8px;
+        }
+        .a3-room {
+            font-size: 18px;
+            font-weight: bold;
+            color: #1e293b;
+            margin-bottom: 20px;
+        }
+        .a3-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            height: 720px;
+        }
+        .a3-placeholder {
+            border: 2px dashed #cbd5e1;
+            background: #f8fafc;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #94a3b8;
+            font-size: 14px;
+        }
+        .a3-img-box {
             width: 100%;
-            background: white;
-            border: 1px solid #ccc;
-            position: relative;
+            height: 100%;
+            border-radius: 6px;
+            overflow: hidden;
+            background: black;
+            border: 1px solid #cbd5e1;
+        }
+        .a3-img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .a3-footer {
+            text-align: center;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        .a3-remark {
+            font-size: 20px;
+            font-weight: bold;
+            color: black;
+            line-height: 1.5;
+            max-width: 90%;
+            margin: 0 auto;
+        }
+        .a3-label {
+            font-size: 14px;
+            font-weight: bold;
+            color: #475569;
+            text-transform: uppercase;
+            margin-top: 8px;
+            letter-spacing: 1px;
+            font-family: monospace;
         }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
-<body class="bg-slate-100 font-sans text-gray-800 antialiased">
+<body>
 
-    <div class="bg-blue-700 text-white p-4 shadow-md sticky top-0 z-40 flex items-center justify-between">
-        <div class="flex items-center gap-2">
-            <span class="text-xl">🏗️</span>
-            <div>
-                <h1 class="text-sm font-black tracking-wide uppercase">Zwe Maung Maung</h1>
-                <p class="text-[10px] text-blue-200">Photo Report Builder</p>
-            </div>
+    <div class="nav-bar">
+        <div>
+            <div class="nav-title">King Engineering</div>
+            <div class="nav-subtitle">Clean A3 Report Builder</div>
         </div>
-        <span class="bg-blue-900 text-[10px] px-2 py-0.5 rounded font-mono font-bold text-blue-300">v4.1-Fixed</span>
+        <div class="nav-tag">v4.2-LocalCSS</div>
     </div>
 
-    <div class="max-w-md mx-auto p-3 space-y-4 pb-24">
-        
-        <div class="bg-white p-4 rounded-xl shadow border border-gray-200 space-y-3">
-            <h2 class="text-xs font-bold text-blue-700 uppercase tracking-wider flex items-center gap-1.5 border-b border-gray-100 pb-2">
-                📋 အချက်အလက်များ ဖြည့်သွင်းရန်
-            </h2>
-
-            <div>
-                <label class="block text-[11px] font-bold text-gray-700 mb-1">၁။ အထပ် ရွေးချယ်ရန် (Floor Level)</label>
-                <select id="floorSelect" class="w-full p-2 border border-gray-300 bg-white rounded-lg text-xs font-semibold focus:outline-none focus:border-blue-500">
+    <div class="container">
+        <div class="card">
+            <div class="card-title">📋 အချက်အလက်များ ဖြည့်သွင်းရန်</div>
+            
+            <div class="form-group">
+                <label class="form-label">၁။ အထပ် ရွေးချယ်ရန် (Floor Level)</label>
+                <select id="floorSelect" class="form-control" style="font-weight: bold;">
                     <option value="Ground Floor">Ground Floor</option>
                     <option value="First Floor">First Floor</option>
                     <option value="Second Floor">Second Floor</option>
@@ -71,96 +361,80 @@
                 </select>
             </div>
 
-            <div>
-                <label class="block text-[11px] font-bold text-gray-700 mb-1">၂။ အခန်းအမည် သတ်မှတ်ရန် (Room Name)</label>
-                <input type="text" id="roomNameInput" placeholder="ဥပမာ- 4. Reception Room" class="w-full p-2 border border-gray-300 rounded-lg text-xs focus:outline-none focus:border-blue-500">
+            <div class="form-group">
+                <label class="form-label">၂။ အခန်းအမည် သတ်မှတ်ရန် (Room Name)</label>
+                <input type="text" id="roomNameInput" placeholder="ဥပမာ- 4. M&E Control Room" class="form-control">
             </div>
 
-            <div>
-                <label class="block text-[11px] font-bold text-gray-700 mb-1">၃။ ဓာတ်ပုံများ တင်ရန် (၄ ပုံအထိ တွဲရွေးပါ)</label>
-                <input type="file" id="photoFilesInput" multiple accept="image/*" class="w-full text-xs text-gray-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-[11px] file:font-bold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 border border-dashed border-gray-300 p-2 rounded-lg bg-gray-50 cursor-pointer" onchange="triggerAutoLiveSync()">
+            <div class="form-group">
+                <label class="form-label">၃။ ဓာတ်ပုံများ တင်ရန် (၄ ပုံအထိ တွဲရွေးပါ)</label>
+                <input type="file" id="photoFilesInput" multiple accept="image/*" class="form-control" onchange="triggerAutoLiveSync()">
             </div>
 
-            <div>
-                <label class="block text-[11px] font-bold text-blue-800 mb-1">၄။ ပုံအောက်တွင် label ရေးရန် (Remark/Status Text)</label>
-                <input type="text" id="roomRemarkInput" placeholder="ဥပမာ- နံရံမျက်နှာပြင် အချောကိုင်ခြင်း ဆောင်ရွက်ဆဲ" class="w-full p-2 border border-blue-200 bg-blue-50/30 font-semibold rounded-lg text-xs focus:outline-none focus:border-blue-500" oninput="triggerAutoLiveSync()">
+            <div class="form-group">
+                <label class="form-label" style="color:#1e3a8a;">၄။ ပုံအောက်တွင် label ရေးရန် (Remark/Status)</label>
+                <input type="text" id="roomRemarkInput" placeholder="ဥပမာ- နံရံမျက်နှာပြင် အချောကိုင်ခြင်း ဆောင်ရွက်ဆဲ" class="form-control remark-input" oninput="triggerAutoLiveSync()">
             </div>
         </div>
 
-        <div class="bg-white p-4 rounded-xl shadow border border-gray-200 space-y-2">
-            <div class="flex justify-between items-center border-b border-gray-100 pb-2">
-                <h2 class="text-xs font-bold text-gray-700 uppercase tracking-wider flex items-center gap-1.5">
-                    🖼️ စာရွက်ပေါ်တွင် ပေါ်မည့်ပုံစံ (Live Preview)
-                </h2>
-                <span class="text-[9px] text-gray-400 font-bold font-mono">No Header Format</span>
-            </div>
-
-            <div class="mobile-preview-box rounded p-3 flex flex-col justify-between shadow-inner overflow-hidden border border-gray-300">
+        <div class="card">
+            <div class="card-title" style="color:#475569;">🖼️ စာရွက်ပေါ်တွင် ပေါ်မည့်ပုံစံ (Live Preview)</div>
+            
+            <div class="mobile-preview-box">
                 <div>
-                    <h5 id="previewFloor" class="text-[7px] font-black text-black uppercase leading-tight border-b [border-width:0.5px] border-gray-200 pb-0.5">Ground Floor</h5>
-                    <h6 id="previewRoom" class="text-[6px] font-bold text-gray-800 mt-0.5">4. Reception Room</h6>
+                    <div class="preview-floor" id="previewFloor">Ground Floor</div>
+                    <div class="preview-room" id="previewRoom">4. M&E Control Room</div>
                 </div>
 
-                <div id="previewPhotoGrid" class="grid grid-cols-2 gap-1 h-[68%] my-auto">
-                    <div class="border border-dashed border-gray-300 bg-gray-50 rounded flex items-center justify-center text-[6px] text-gray-400">Photo 1</div>
-                    <div class="border border-dashed border-gray-300 bg-gray-50 rounded flex items-center justify-center text-[6px] text-gray-400">Photo 2</div>
-                    <div class="border border-dashed border-gray-300 bg-gray-50 rounded flex items-center justify-center text-[6px] text-gray-400">Photo 3</div>
-                    <div class="border border-dashed border-gray-300 bg-gray-50 rounded flex items-center justify-center text-[6px] text-gray-400">Photo 4</div>
+                <div class="preview-grid" id="previewPhotoGrid">
+                    <div class="placeholder-box">Photo 1</div>
+                    <div class="placeholder-box">Photo 2</div>
+                    <div class="placeholder-box">Photo 3</div>
+                    <div class="placeholder-box">Photo 4</div>
                 </div>
 
-                <div class="text-center w-full scale-90 mt-1">
-                    <p id="previewCustomRemark" class="text-[6px] font-bold text-gray-900 truncate max-w-[90%] mx-auto">-</p>
-                    <p id="previewAutoLabel" class="text-[4px] font-bold text-gray-500 uppercase tracking-tighter font-mono">GF-RECEPTION ROOM</p>
+                <div class="preview-footer">
+                    <div class="preview-remark" id="previewCustomRemark">-</div>
+                    <div class="preview-label" id="previewAutoLabel">GF-M&E CONTROL ROOM</div>
                 </div>
             </div>
         </div>
-
     </div>
 
-    <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-3 shadow-[0_-4px_10px_rgba(0,0,0,0.05)] z-40">
-        <div class="max-w-md mx-auto grid grid-cols-2 gap-2">
-            <button onclick="generateHighResTemplateData()" class="w-full bg-blue-600 text-white font-bold py-2.5 px-4 rounded-xl hover:bg-blue-700 transition text-xs shadow active:scale-95 flex items-center justify-center gap-1">
-                🔄 Live Preview Sync
-            </button>
-            <button onclick="downloadA3LandscapeImage()" class="w-full bg-green-600 text-white font-bold py-2.5 px-4 rounded-xl hover:bg-green-700 transition text-xs shadow active:scale-95 flex items-center justify-center gap-1">
-                💾 JPEG ဓာတ်ပုံသိမ်းမည်
-            </button>
+    <div class="footer-actions">
+        <div class="button-group">
+            <button onclick="generateHighResTemplateData()" class="btn btn-blue">🔄 Live Sync</button>
+            <button onclick="downloadA3LandscapeImage()" class="btn btn-green">💾 JPEG သိမ်းမည်</button>
         </div>
     </div>
 
-    <div id="loadingOverlay" class="hidden fixed inset-0 bg-black/60 z-50 flex flex-col items-center justify-center text-white font-bold text-xs p-4 text-center">
-        <div class="animate-spin rounded-full h-9 w-9 border-4 border-white border-t-transparent mb-3"></div>
-        A3 Layout တည်ဆောက်နေပါသည် ကိုကို...
+    <div id="loadingOverlay" class="overlay">
+        <div class="spinner"></div>
+        <div>A3 Layout တည်ဆောက်နေပါသည် ကိုကို...</div>
     </div>
 
 
-    <div id="a3HiddenCanvasContainer" class="flex flex-col justify-between">
+    <div id="a3HiddenCanvasContainer">
         <div>
-            <div class="mb-2">
-                <h2 id="finalFloorTitle" class="text-2xl font-black text-black uppercase tracking-wide border-b-2 border-black pb-1">Ground Floor</h2>
-            </div>
-            <div class="mb-6">
-                <h3 id="finalRoomTitle" class="text-lg font-bold text-gray-900">4. Reception Room</h3>
-                <p class="text-xs text-gray-400 italic mt-0.5">Site Photo :</p>
-            </div>
+            <div class="a3-title" id="finalFloorTitle">Ground Floor</div>
+            <div class="a3-room" id="finalRoomTitle">4. M&E Control Room</div>
 
-            <div id="finalPhotoGrid" class="grid grid-cols-2 gap-x-6 gap-y-6 h-[720px]">
-                <div class="border border-dashed border-gray-300 bg-gray-50 rounded flex items-center justify-center text-gray-400 text-xs">Photo 1</div>
-                <div class="border border-dashed border-gray-300 bg-gray-50 rounded flex items-center justify-center text-gray-400 text-xs">Photo 2</div>
-                <div class="border border-dashed border-gray-300 bg-gray-50 rounded flex items-center justify-center text-gray-400 text-xs">Photo 3</div>
-                <div class="border border-dashed border-gray-300 bg-gray-50 rounded flex items-center justify-center text-gray-400 text-xs">Photo 4</div>
+            <div class="a3-grid" id="finalPhotoGrid">
+                <div class="a3-placeholder">Photo 1</div>
+                <div class="a3-placeholder">Photo 2</div>
+                <div class="a3-placeholder">Photo 3</div>
+                <div class="a3-placeholder">Photo 4</div>
             </div>
         </div>
 
-        <div class="text-center w-full mb-4">
-            <p id="finalCustomRemark" class="text-xl font-bold text-gray-900 tracking-wide leading-relaxed block max-w-5xl mx-auto"></p>
-            <p id="finalAutoLabel" class="text-sm font-semibold text-gray-600 tracking-widest mt-2 uppercase font-mono"></p>
+        <div class="a3-footer">
+            <div class="a3-remark" id="finalCustomRemark"></div>
+            <div class="a3-label" id="finalAutoLabel"></div>
         </div>
     </div>
 
 
     <script>
-        // High-Performance Image Resizer (Perfect Standard 2D Canvas context)
         function compressAndResizeImage(file) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
@@ -181,12 +455,10 @@
                         canvas.width = width;
                         canvas.height = height;
 
-                        // FIXED: Exact corrected rendering engine instantiation context
                         const ctx2d = canvas.getContext('2d');
                         ctx2d.drawImage(img, 0, 0, width, height);
                         resolve(canvas.toDataURL('image/jpeg', 0.85));
                     };
-                    img.onerror = err => reject(err);
                 };
                 reader.onerror = err => reject(err);
             });
@@ -204,7 +476,7 @@
 
         function triggerAutoLiveSync() {
             const floor = document.getElementById('floorSelect').value;
-            const roomName = document.getElementById('roomNameInput').value.trim() || "4. Reception Room";
+            const roomName = document.getElementById('roomNameInput').value.trim() || "4. M&E Control Room";
             const customRemark = document.getElementById('roomRemarkInput').value.trim() || "-";
 
             document.getElementById('previewFloor').innerText = floor;
@@ -227,7 +499,7 @@
                 return false;
             }
 
-            document.getElementById('loadingOverlay').classList.remove('hidden');
+            document.getElementById('loadingOverlay').style.display = 'flex';
             triggerAutoLiveSync();
 
             document.getElementById('finalFloorTitle').innerText = floor;
@@ -248,10 +520,10 @@
 
             if (totalFiles === 0) {
                 for(let k=0; k<4; k++) {
-                    hiddenA3Grid.innerHTML += `<div class="border border-dashed border-gray-300 bg-gray-50 rounded flex items-center justify-center text-gray-400 text-xs">Photo ${k+1}</div>`;
-                    mobilePreviewGrid.innerHTML += `<div class="border border-dashed border-gray-300 bg-gray-50 rounded flex items-center justify-center text-[6px] text-gray-400">Photo ${k+1}</div>`;
+                    hiddenA3Grid.innerHTML += `<div class="a3-placeholder">Photo ${k+1}</div>`;
+                    mobilePreviewGrid.innerHTML += `<div class="placeholder-box">Photo ${k+1}</div>`;
                 }
-                document.getElementById('loadingOverlay').classList.add('hidden');
+                document.getElementById('loadingOverlay').style.display = 'none';
                 return true;
             }
 
@@ -260,18 +532,16 @@
                     const compressedB64 = await compressAndResizeImage(fileInput.files[i]);
 
                     const previewWrapper = document.createElement('div');
-                    previewWrapper.className = 'w-full h-full rounded overflow-hidden bg-black border [border-width:0.5px] border-gray-200';
+                    previewWrapper.className = 'img-wrapper';
                     const previewImg = document.createElement('img');
                     previewImg.src = compressedB64;
-                    previewImg.className = 'w-full h-full object-cover';
                     previewWrapper.appendChild(previewImg);
                     mobilePreviewGrid.appendChild(previewWrapper);
 
                     const finalWrapper = document.createElement('div');
-                    finalWrapper.className = 'w-full h-full border border-gray-300 rounded shadow-sm overflow-hidden bg-black';
+                    finalWrapper.className = 'a3-img-box';
                     const finalImg = document.createElement('img');
                     finalImg.src = compressedB64;
-                    finalImg.className = 'w-full h-full object-cover';
                     finalWrapper.appendChild(finalImg);
                     hiddenA3Grid.appendChild(finalWrapper);
 
@@ -282,12 +552,12 @@
 
             if (totalFiles < 4) {
                 for (let j = totalFiles; j < 4; j++) {
-                    hiddenA3Grid.innerHTML += `<div class="border border-dashed border-gray-300 bg-gray-50 rounded flex items-center justify-center text-gray-400 text-xs">No Photo</div>`;
-                    mobilePreviewGrid.innerHTML += `<div class="border border-dashed border-gray-300 bg-gray-50 rounded flex items-center justify-center text-[6px] text-gray-400">No Photo</div>`;
+                    hiddenA3Grid.innerHTML += `<div class="a3-placeholder">No Photo</div>`;
+                    mobilePreviewGrid.innerHTML += `<div class="placeholder-box">No Photo</div>`;
                 }
             }
 
-            document.getElementById('loadingOverlay').classList.add('hidden');
+            document.getElementById('loadingOverlay').style.display = 'none';
             return true;
         }
 
@@ -320,11 +590,5 @@
             }, 300);
         }
     </script>
-</body>
-</html>
-
-  <script>
-
-  </script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>King Report A3 - Direct Inject Fix</title>
+    <title>King Report A3 - Pure Auto Overwrite</title>
     <style>
         /* Modern Native App Style Reset */
         * {
@@ -142,13 +142,13 @@
             margin: auto 0;
             background: #ffffff !important;
         }
-        /* Dynamic Background-Overlaid Image Slots */
+        /* Overlaid Grid Slots */
         .img-wrapper-bg {
             width: 100%;
             height: 100%;
             border-radius: 4px;
             border: 0.5px solid #cbd5e1;
-            background-color: #f8fafc;
+            background-color: #f1f5f9; /* Standard soft background */
             background-position: center !important;
             background-size: cover !important;
             background-repeat: no-repeat !important;
@@ -196,26 +196,23 @@
         .button-group {
             max-width: 450px;
             margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
         }
         .btn {
             width: 100%;
             border: none;
             color: white;
             font-weight: bold;
-            padding: 10px;
+            padding: 12px;
             border-radius: 10px;
-            font-size: 12px;
+            font-size: 13px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 4px;
+            gap: 6px;
+            background-color: #16a34a;
+            box-shadow: 0 4px 6px rgba(22, 163, 74, 0.2);
         }
-        .btn-blue { background-color: #2563eb; }
-        .btn-green { background-color: #16a34a; }
         .btn:active { transform: scale(0.97); }
         
         /* UI Overlay Spinner */
@@ -328,7 +325,7 @@
             <div class="nav-title">Zwe Maung Maung</div>
             <div class="nav-subtitle">Report Builder</div>
         </div>
-        <div class="nav-tag">v4.7-DirectInject</div>
+        <div class="nav-tag">v4.8-AutoOverwrite</div>
     </div>
 
     <div class="container">
@@ -337,7 +334,7 @@
             
             <div class="form-group">
                 <label class="form-label">၁။ အထပ် ရွေးချယ်ရန် (Floor Level)</label>
-                <select id="floorSelect" class="form-control" style="font-weight: bold;">
+                <select id="floorSelect" class="form-control" style="font-weight: bold;" onchange="triggerAutoLiveSync()">
                     <option value="Ground Floor">Ground Floor</option>
                     <option value="First Floor">First Floor</option>
                     <option value="Second Floor">Second Floor</option>
@@ -349,12 +346,12 @@
 
             <div class="form-group">
                 <label class="form-label">၂။ အခန်းအမည် သတ်မှတ်ရန် (Room Name)</label>
-                <input type="text" id="roomNameInput" placeholder="ဥပမာ- 4. M&E Control Room" class="form-control">
+                <input type="text" id="roomNameInput" placeholder="ဥပမာ- 4. M&E Control Room" class="form-control" oninput="triggerAutoLiveSync()">
             </div>
 
             <div class="form-group">
-                <label class="form-label">၃။ ဓာတ်ပုံများ တင်ရန် (၄ ပုံအထိ တွဲရွေးပါ)</label>
-                <input type="file" id="photoFilesInput" multiple accept="image/*" class="form-control" onchange="triggerAutoLiveSync()">
+                <label class="form-label" style="color:#1d4ed8; font-weight: 900;">၃။ ဓာတ်ပုံများ တင်ရန် (ပုံရွေးတာနဲ့ ချက်ချင်း Overwrite ပေါ်ပါမည်)</label>
+                <input type="file" id="photoFilesInput" multiple accept="image/*" class="form-control" onchange="processImagesAutomatically()">
             </div>
 
             <div class="form-group">
@@ -373,10 +370,10 @@
                 </div>
 
                 <div class="preview-grid" id="previewPhotoGrid">
-                    <div class="img-wrapper-bg">Photo 1</div>
-                    <div class="img-wrapper-bg">Photo 2</div>
-                    <div class="img-wrapper-bg">Photo 3</div>
-                    <div class="img-wrapper-bg">Photo 4</div>
+                    <div class="img-wrapper-bg" id="pSlot0">Photo 1</div>
+                    <div class="img-wrapper-bg" id="pSlot1">Photo 2</div>
+                    <div class="img-wrapper-bg" id="pSlot2">Photo 3</div>
+                    <div class="img-wrapper-bg" id="pSlot3">Photo 4</div>
                 </div>
 
                 <div class="preview-footer">
@@ -389,31 +386,30 @@
 
     <div class="footer-actions">
         <div class="button-group">
-            <button onclick="generateHighResTemplateData()" class="btn btn-blue">🔄 Live Sync</button>
-            <button onclick="downloadA3LandscapeImage()" class="btn btn-green">💾 JPEG သိမ်းမည်</button>
+            <button onclick="downloadA3LandscapeImage()" class="btn">💾 JPEG ဓာတ်ပုံထုတ်ယူသိမ်းမည်</button>
         </div>
     </div>
 
     <div id="loadingOverlay" class="overlay">
         <div class="spinner"></div>
-        <div style="margin-top:5px;">A3 Layout တည်ဆောက်နေပါသည် ကိုကို...</div>
+        <div style="margin-top:5px;">A3 Layout ထုတ်ယူနေပါသည်...</div>
     </div>
 
 
-    <div id="a3HiddenCanvasContainer" style="background-color: #ffffff !important; background: #ffffff !important;">
-        <div style="background-color: #ffffff !important;">
+    <div id="a3HiddenCanvasContainer">
+        <div>
             <div class="a3-title" id="finalFloorTitle">Ground Floor</div>
             <div class="a3-room" id="finalRoomTitle">4. M&E Control Room</div>
 
-            <div class="a3-grid" id="finalPhotoGrid" style="background-color: #ffffff !important; background: #ffffff !important;">
-                <div class="a3-placeholder">Photo 1</div>
-                <div class="a3-placeholder">Photo 2</div>
+            <div class="a3-grid" id="finalPhotoGrid">
+                <div class="a3-placeholder" id="fSlot0">Photo 1</div>
+                <div class="a3-placeholder" id="fSlot1">Photo 2</div>
                 <div class="a3-placeholder">Photo 3</div>
                 <div class="a3-placeholder">Photo 4</div>
             </div>
         </div>
 
-        <div class="a3-footer" style="background-color: #ffffff !important;">
+        <div class="a3-footer">
             <div class="a3-remark" id="finalCustomRemark"></div>
             <div class="a3-label" id="finalAutoLabel"></div>
         </div>
@@ -440,11 +436,13 @@
             return "Site";
         }
 
+        // Live Dynamic Text Auto Sync
         function triggerAutoLiveSync() {
             const floor = document.getElementById('floorSelect').value;
             const roomName = document.getElementById('roomNameInput').value.trim() || "4. M&E Control Room";
             const customRemark = document.getElementById('roomRemarkInput').value.trim() || "-";
 
+            // Sync Preview
             document.getElementById('previewFloor').innerText = floor;
             document.getElementById('previewRoom').innerText = roomName;
             document.getElementById('previewCustomRemark').innerText = customRemark;
@@ -452,121 +450,98 @@
             const floorCode = getFloorShortCode(floor);
             const pureRoomTitle = roomName.replace(/^\d+\.\s*/, '');
             document.getElementById('previewAutoLabel').innerText = `${floorCode}-${pureRoomTitle}`;
-        }
 
-        async function generateHighResTemplateData() {
-            const floor = document.getElementById('floorSelect').value;
-            const roomName = document.getElementById('roomNameInput').value.trim();
-            const customRemark = document.getElementById('roomRemarkInput').value.trim();
-            const fileInput = document.getElementById('photoFilesInput');
-
-            if (!roomName) {
-                alert("ကိုကိုရေ... အခန်းအမည် အရင်ရိုက်ထည့်ပေးပါနော်။");
-                return false;
-            }
-
-            document.getElementById('loadingOverlay').style.display = 'flex';
-            
-            await new Promise(r => setTimeout(r, 100));
-            triggerAutoLiveSync();
-
+            // Sync Hidden Canvas
             document.getElementById('finalFloorTitle').innerText = floor;
             document.getElementById('finalRoomTitle').innerText = roomName;
             document.getElementById('finalCustomRemark').innerText = customRemark ? customRemark : "";
-            
-            const floorCode = getFloorShortCode(floor);
-            const pureRoomTitle = roomName.replace(/^\d+\.\s*/, '');
             document.getElementById('finalAutoLabel').innerText = `${floorCode}-${pureRoomTitle}`;
+        }
 
+        // CRITICAL FIXED: Instant Auto-Overwrite Image on Select Action
+        async function processImagesAutomatically() {
+            const fileInput = document.getElementById('photoFilesInput');
+            const totalFiles = Math.min(fileInput.files.length, 4);
+
+            // Reset Grids to fresh templates
             const mobilePreviewGrid = document.getElementById('previewPhotoGrid');
             const hiddenA3Grid = document.getElementById('finalPhotoGrid');
-            
-            // Clear content completely before rendering
             mobilePreviewGrid.innerHTML = '';
             hiddenA3Grid.innerHTML = '';
 
-            const totalFiles = Math.min(fileInput.files.length, 4);
-
             if (totalFiles === 0) {
                 for(let k=0; k<4; k++) {
-                    hiddenA3Grid.innerHTML += `<div class="a3-img-box-bg">Photo ${k+1}</div>`;
                     mobilePreviewGrid.innerHTML += `<div class="img-wrapper-bg">Photo ${k+1}</div>`;
+                    hiddenA3Grid.innerHTML += `<div class="a3-placeholder">Photo ${k+1}</div>`;
                 }
-                document.getElementById('loadingOverlay').style.display = 'none';
-                return true;
+                return;
             }
 
-            // FIXED: Directly build and append new dynamic blocks to ensure inline style properties override background boxes instantly
+            // Read and instantly push dynamic style overwrite layers
             for (let i = 0; i < totalFiles; i++) {
-                try {
-                    const file = fileInput.files[i];
-                    const base64Data = await readFileAsDataURL(file);
+                const file = fileInput.files[i];
+                const base64Data = await readFileAsDataURL(file);
 
-                    if (base64Data) {
-                        // 1. Build and Inject Mobile Preview Box Element
-                        const pBox = document.createElement('div');
-                        pBox.className = 'img-wrapper-bg';
-                        pBox.style.setProperty('background-image', `url("${base64Data}")`, 'important');
-                        pBox.innerHTML = ''; // Clear text if any
-                        mobilePreviewGrid.appendChild(pBox);
+                if (base64Data) {
+                    // Overwrite Preview Slot
+                    const pSlot = document.createElement('div');
+                    pSlot.className = 'img-wrapper-bg';
+                    pSlot.style.setProperty('background-image', `url("${base64Data}")`, 'important');
+                    mobilePreviewGrid.appendChild(pSlot);
 
-                        // 2. Build and Inject High-Res A3 Target Element
-                        const fBox = document.createElement('div');
-                        fBox.className = 'a3-img-box-bg';
-                        fBox.style.setProperty('background-image', `url("${base64Data}")`, 'important');
-                        fBox.innerHTML = ''; // Clear text if any
-                        hiddenA3Grid.appendChild(fBox);
-                    } else {
-                        hiddenA3Grid.innerHTML += `<div class="a3-img-box-bg">Error</div>`;
-                        mobilePreviewGrid.innerHTML += `<div class="img-wrapper-bg">Error</div>`;
-                    }
-                } catch (e) {
-                    console.error(e);
+                    // Overwrite High-Res Export Slot
+                    const fSlot = document.createElement('div');
+                    fBoxClassName = 'a3-img-box-bg';
+                    fSlot.className = 'a3-img-box-bg';
+                    fSlot.style.setProperty('background-image', `url("${base64Data}")`, 'important');
+                    hiddenA3Grid.appendChild(fSlot);
                 }
             }
 
-            // Fill leftover grid boxes dynamically if less than 4 files
+            // Append empty placeholders for remainder slots
             if (totalFiles < 4) {
                 for (let j = totalFiles; j < 4; j++) {
-                    hiddenA3Grid.innerHTML += `<div class="a3-img-box-bg">No Photo</div>`;
                     mobilePreviewGrid.innerHTML += `<div class="img-wrapper-bg">No Photo</div>`;
+                    hiddenA3Grid.innerHTML += `<div class="a3-img-box-bg">No Photo</div>`;
                 }
             }
-
-            document.getElementById('loadingOverlay').style.display = 'none';
-            return true;
+            triggerAutoLiveSync();
         }
 
         async function downloadA3LandscapeImage() {
-            const isReady = await generateHighResTemplateData();
-            if (!isReady) return;
+            const roomName = document.getElementById('roomNameInput').value.trim();
+            if (!roomName) {
+                alert("ကိုကိုရေ... အခန်းအမည် အရင်ရိုက်ထည့်ပေးပါနော်။");
+                return;
+            }
 
-            const roomName = document.getElementById('roomNameInput').value.trim() || "A3_Page";
-            const floor = document.getElementById('floorSelect').value;
+            document.getElementById('loadingOverlay').style.display = 'flex';
+            triggerAutoLiveSync();
+            await new Promise(r => setTimeout(r, 200));
+
             const targetWorkspace = document.getElementById('a3HiddenCanvasContainer');
 
-            setTimeout(() => {
-                html2canvas(targetWorkspace, {
-                    scale: 2, 
-                    useCORS: true,
-                    allowTaint: true,
-                    backgroundColor: "#ffffff",
-                    logging: false
-                }).then(canvas => {
-                    const imageURI = canvas.toDataURL("image/jpeg", 0.95);
-                    const link = document.createElement('a');
-                    link.download = `A3_Report_${floor}_${roomName.replace(/\s+/g, '_')}.jpg`;
-                    link.href = imageURI;
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                }).catch(err => {
-                    alert("ဓာတ်ပုံထုတ်ယူရာတွင် အမှားအယွင်းရှိပါသည် ကိုကို။");
-                    console.error(err);
-                });
-            }, 300);
+            html2canvas(targetWorkspace, {
+                scale: 2, 
+                useCORS: true,
+                allowTaint: true,
+                backgroundColor: "#ffffff",
+                logging: false
+            }).then(canvas => {
+                const imageURI = canvas.toDataURL("image/jpeg", 0.95);
+                const link = document.createElement('a');
+                link.download = `A3_Report_${document.getElementById('floorSelect').value}_${roomName.replace(/\s+/g, '_')}.jpg`;
+                link.href = imageURI;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                document.getElementById('loadingOverlay').style.display = 'none';
+            }).catch(err => {
+                alert("ဓာတ်ပုံထုတ်ယူရာတွင် အမှားအယွင်းရှိပါသည် ကိုကို။");
+                console.error(err);
+                document.getElementById('loadingOverlay').style.display = 'none';
+            });
         }
     </script>
 </body>
-    </html>
-    
+</html>

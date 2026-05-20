@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>King Report A3 - Ultimate Fixed</title>
+    <title>King Report A3 - Absolute Fix</title>
     <style>
         /* Modern Native App Style Reset */
         * {
@@ -110,7 +110,7 @@
         .mobile-preview-box {
             aspect-ratio: 1584 / 1123;
             width: 100%;
-            background: white;
+            background: #ffffff !important;
             border: 1px solid #cbd5e1;
             border-radius: 6px;
             padding: 12px;
@@ -140,6 +140,7 @@
             gap: 4px;
             height: 65%;
             margin: auto 0;
+            background: #ffffff !important;
         }
         .placeholder-box {
             border: 0.5px dashed #cbd5e1;
@@ -156,7 +157,7 @@
             height: 100%;
             border-radius: 4px;
             overflow: hidden;
-            background: #000000;
+            background: #ffffff !important; /* FIXED: Change from black to white */
             border: 0.5px solid #e2e8f0;
         }
         .img-wrapper img {
@@ -169,6 +170,7 @@
             width: 100%;
             transform: scale(0.9);
             margin-top: 4px;
+            background: #ffffff !important;
         }
         .preview-remark {
             font-size: 6px;
@@ -300,7 +302,7 @@
             height: 100%;
             border-radius: 6px;
             overflow: hidden;
-            background: #000000 !important;
+            background: #ffffff !important; /* FIXED: Change from black to white */
             border: 1px solid #cbd5e1;
         }
         .a3-img-box img {
@@ -334,6 +336,7 @@
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
+    
 <body>
 
     <div class="nav-bar">
@@ -341,7 +344,7 @@
             <div class="nav-title">Zwe Maung Maung</div>
             <div class="nav-subtitle">Report Builder</div>
         </div>
-        <div class="nav-tag">v4.4-FinalFixed</div>
+        <div class="nav-tag">v4.5-AbsoluteFix</div>
     </div>
 
     <div class="container">
@@ -418,7 +421,7 @@
             <div class="a3-title" id="finalFloorTitle">Ground Floor</div>
             <div class="a3-room" id="finalRoomTitle">4. M&E Control Room</div>
 
-            <div class="a3-grid" id="finalPhotoGrid" style="background-color: #ffffff !important;">
+            <div class="a3-grid" id="finalPhotoGrid" style="background-color: #ffffff !important; background: #ffffff !important;">
                 <div class="a3-placeholder">Photo 1</div>
                 <div class="a3-placeholder">Photo 2</div>
                 <div class="a3-placeholder">Photo 3</div>
@@ -434,38 +437,6 @@
 
 
     <script>
-        // High Speed FileReader Base64 Generator to fully fix the invisible/missing image issue
-        function compressAndResizeImage(file) {
-            return new Promise((resolve) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = (event) => {
-                    const img = new Image();
-                    img.src = event.target.result;
-                    img.onload = () => {
-                        const canvas = document.createElement('canvas');
-                        const MAX_WIDTH = 1000; // Optimal width for high-res A3
-                        let width = img.width;
-                        let height = img.height;
-
-                        if (width > MAX_WIDTH) {
-                            height = Math.round((height * MAX_WIDTH) / width);
-                            width = MAX_WIDTH;
-                        }
-                        canvas.width = width;
-                        canvas.height = height;
-
-                        const ctx2d = canvas.getContext('2d');
-                        ctx2d.drawImage(img, 0, 0, width, height);
-                        
-                        // Force JPEG compression to save space and fix rendering
-                        resolve(canvas.toDataURL('image/jpeg', 0.85));
-                    };
-                    img.onerror = () => resolve(event.target.result);
-                };
-            });
-        }
-
         function getFloorShortCode(floorName) {
             if (floorName.includes("Ground")) return "GF";
             if (floorName.includes("First")) return "1F";
@@ -488,6 +459,15 @@
             const floorCode = getFloorShortCode(floor);
             const pureRoomTitle = roomName.replace(/^\d+\.\s*/, '');
             document.getElementById('previewAutoLabel').innerText = `${floorCode}-${pureRoomTitle}`;
+        }
+
+        // Active list to manage revocation of blobs
+        let activeBlobURLs = [];
+        function clearPreviousBlobs() {
+            activeBlobURLs.forEach(url => {
+                try { window.URL.revokeObjectURL(url); } catch(e){}
+            });
+            activeBlobURLs = [];
         }
 
         async function generateHighResTemplateData() {
@@ -519,34 +499,37 @@
             
             mobilePreviewGrid.innerHTML = '';
             hiddenA3Grid.innerHTML = '';
+            clearPreviousBlobs();
 
             const totalFiles = Math.min(fileInput.files.length, 4);
 
             if (totalFiles === 0) {
                 for(let k=0; k<4; k++) {
-                    hiddenA3Grid.innerHTML += `<div class="a3-placeholder">Photo ${k+1}</div>`;
+                    hiddenA3Grid.innerHTML += `<div class="a3-placeholder" style="background:#f8fafc; color:#94a3b8;">Photo ${k+1}</div>`;
                     mobilePreviewGrid.innerHTML += `<div class="placeholder-box">Photo ${k+1}</div>`;
                 }
                 document.getElementById('loadingOverlay').style.display = 'none';
                 return true;
             }
 
-            // Process sequentially with FileReader to guarantee rendering stability
+            // Direct Native Object Rendering bypassing FileReader Security blocks
             for (let i = 0; i < totalFiles; i++) {
                 try {
-                    const compressedB64 = await compressAndResizeImage(fileInput.files[i]);
+                    const file = fileInput.files[i];
+                    const nativeBlobURL = window.URL.createObjectURL(file);
+                    activeBlobURLs.push(nativeBlobURL);
 
                     const previewWrapper = document.createElement('div');
                     previewWrapper.className = 'img-wrapper';
                     const previewImg = document.createElement('img');
-                    previewImg.src = compressedB64;
+                    previewImg.src = nativeBlobURL;
                     previewWrapper.appendChild(previewImg);
                     mobilePreviewGrid.appendChild(previewWrapper);
 
                     const finalWrapper = document.createElement('div');
                     finalWrapper.className = 'a3-img-box';
                     const finalImg = document.createElement('img');
-                    finalImg.src = compressedB64;
+                    finalImg.src = nativeBlobURL;
                     finalWrapper.appendChild(finalImg);
                     hiddenA3Grid.appendChild(finalWrapper);
                 } catch (e) {
@@ -556,7 +539,7 @@
 
             if (totalFiles < 4) {
                 for (let j = totalFiles; j < 4; j++) {
-                    hiddenA3Grid.innerHTML += `<div class="a3-placeholder">No Photo</div>`;
+                    hiddenA3Grid.innerHTML += `<div class="a3-placeholder" style="background:#f8fafc; color:#94a3b8;">No Photo</div>`;
                     mobilePreviewGrid.innerHTML += `<div class="placeholder-box">No Photo</div>`;
                 }
             }
@@ -573,16 +556,16 @@
             const floor = document.getElementById('floorSelect').value;
             const targetWorkspace = document.getElementById('a3HiddenCanvasContainer');
 
-            // Hardcode style adjustments right before capture to fully eliminate dark background issues
+            // Force override settings before html2canvas captures
             targetWorkspace.style.backgroundColor = "#ffffff";
             targetWorkspace.style.background = "#ffffff";
 
             setTimeout(() => {
                 html2canvas(targetWorkspace, {
-                    scale: 2, // High clarity boost
+                    scale: 2, 
                     useCORS: true,
                     allowTaint: true,
-                    backgroundColor: "#ffffff", // Force white canvas canvas background
+                    backgroundColor: "#ffffff",
                     logging: false
                 }).then(canvas => {
                     const imageURI = canvas.toDataURL("image/jpeg", 0.95);
@@ -600,5 +583,4 @@
         }
     </script>
 </body>
-    </html>
-    
+</html>

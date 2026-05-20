@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zwe Maung Maung - Perfect Report v5.0</title>
+    <title>Zwe Maung Maung - Absolute Premium v6.0</title>
     <style>
         /* Modern Native App Style Reset */
         * {
@@ -133,7 +133,7 @@
             color: #1e293b;
             margin-top: 2px;
         }
-        /* Symmetrical 2x2 Image Matrix Canvas HTML5 Core */
+        /* Symmetrical 2x2 Image Matrix Core */
         .preview-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -142,14 +142,28 @@
             margin: auto 0;
             background: #ffffff !important;
         }
-        /* HTML5 Canvas tags to guarantee full canvas image processing stability */
-        .canvas-responsive-slot {
+        /* Fixed Hardware Accelerated Rendering Wrappers */
+        .img-container-wrapper {
             width: 100%;
             height: 100%;
             border-radius: 4px;
             border: 0.5px solid #cbd5e1;
             background-color: #f1f5f9;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .img-container-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
             display: block;
+        }
+        .placeholder-text-label {
+            color: #94a3b8;
+            font-size: 6px;
+            font-weight: bold;
         }
         .preview-footer {
             text-align: center;
@@ -270,13 +284,26 @@
             height: 720px;
             background: #ffffff !important;
         }
-        .a3-canvas-hardware-slot {
+        .a3-img-slot-wrapper {
             width: 100%;
             height: 100%;
             border-radius: 6px;
             border: 1px solid #cbd5e1;
             background-color: #f8fafc;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .a3-img-slot-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
             display: block;
+        }
+        .a3-placeholder-text {
+            color: #94a3b8;
+            font-size: 14px;
         }
         .a3-footer {
             text-align: center;
@@ -311,7 +338,7 @@
             <div class="nav-title">Zwe Maung Maung</div>
             <div class="nav-subtitle">Report Builder</div>
         </div>
-        <div class="nav-tag">v5.0-CanvasOverwritten</div>
+        <div class="nav-tag">v6.0-UltimateObject</div>
     </div>
 
     <div class="container">
@@ -337,7 +364,7 @@
 
             <div class="form-group">
                 <label class="form-label" style="color:#1d4ed8; font-weight: 900;">၃။ ဓာတ်ပုံများ တင်ရန် (ပုံရွေးတာနဲ့ အကွက်ထဲ တိုက်ရိုက် Overwrite အုပ်ပါမည်)</label>
-                <input type="file" id="photoFilesInput" multiple accept="image/*" class="form-control" onchange="processCanvasImagesAutomatically()">
+                <input type="file" id="photoFilesInput" multiple accept="image/*" class="form-control" onchange="processObjectImagesAutomatically()">
             </div>
 
             <div class="form-group">
@@ -355,11 +382,11 @@
                     <div class="preview-room" id="previewRoom">4. M&E Control Room</div>
                 </div>
 
-                <div class="preview-grid">
-                    <canvas id="pCanvas0" class="canvas-responsive-slot"></canvas>
-                    <canvas id="pCanvas1" class="canvas-responsive-slot"></canvas>
-                    <canvas id="pCanvas2" class="canvas-responsive-slot"></canvas>
-                    <canvas id="pCanvas3" class="canvas-responsive-slot"></canvas>
+                <div class="preview-grid" id="previewPhotoGrid">
+                    <div class="img-container-wrapper" id="pSlot0"><span class="placeholder-text-label">Photo 1</span></div>
+                    <div class="img-container-wrapper" id="pSlot1"><span class="placeholder-text-label">Photo 2</span></div>
+                    <div class="img-container-wrapper" id="pSlot2"><span class="placeholder-text-label">Photo 3</span></div>
+                    <div class="img-container-wrapper" id="pSlot3"><span class="placeholder-text-label">Photo 4</span></div>
                 </div>
 
                 <div class="preview-footer">
@@ -387,11 +414,11 @@
             <div class="a3-title" id="finalFloorTitle">Ground Floor</div>
             <div class="a3-room" id="finalRoomTitle">4. M&E Control Room</div>
 
-            <div class="a3-grid">
-                <canvas id="fCanvas0" class="a3-canvas-hardware-slot" width="690" height="480"></canvas>
-                <canvas id="fCanvas1" class="a3-canvas-hardware-slot" width="690" height="480"></canvas>
-                <canvas id="fCanvas2" class="a3-canvas-hardware-slot" width="690" height="480"></canvas>
-                <canvas id="fCanvas3" class="a3-canvas-hardware-slot" width="690" height="480"></canvas>
+            <div class="a3-grid" id="finalPhotoGrid">
+                <div class="a3-img-slot-wrapper" id="fSlot0"><span class="a3-placeholder-text">Photo 1</span></div>
+                <div class="a3-img-slot-wrapper" id="fSlot1"><span class="a3-placeholder-text">Photo 2</span></div>
+                <div class="a3-img-slot-wrapper" id="fSlot2"><span class="a3-placeholder-text">Photo 3</span></div>
+                <div class="a3-img-slot-wrapper" id="fSlot3"><span class="a3-placeholder-text">Photo 4</span></div>
             </div>
         </div>
 
@@ -403,10 +430,6 @@
 
 
     <script>
-        window.onload = function() {
-            clearAllCanvasesWithDefaultPlaceholder();
-        };
-
         function getFloorShortCode(floorName) {
             if (floorName.includes("Ground")) return "GF";
             if (floorName.includes("First")) return "1F";
@@ -437,92 +460,48 @@
             document.getElementById('finalAutoLabel').innerText = `${floorCode}-${pureRoomTitle}`;
         }
 
-        // Clear and render default safe layout styles inside canvas contexts
-        function clearAllCanvasesWithDefaultPlaceholder() {
-            for (let i = 0; i < 4; i++) {
-                const pCtx = document.getElementById(`pCanvas${i}`).getContext('2d');
-                const fCtx = document.getElementById(`fCanvas${i}`).getContext('2d');
-
-                // Set soft gray background layout values
-                pCtx.fillStyle = "#f1f5f9";
-                pCtx.fillRect(0, 0, 300, 150);
-                pCtx.fillStyle = "#94a3b8";
-                pCtx.font = "14px sans-serif";
-                pCtx.textAlign = "center";
-                pCtx.textBaseline = "middle";
-                pCtx.fillText(`Photo ${i+1}`, 150, 75);
-
-                fCtx.fillStyle = "#f8fafc";
-                fCtx.fillRect(0, 0, 690, 480);
-                fCtx.fillStyle = "#94a3b8";
-                fCtx.font = "24px sans-serif";
-                fCtx.textAlign = "center";
-                fCtx.textBaseline = "middle";
-                fCtx.fillText(`Photo ${i+1}`, 345, 240);
-            }
-        }
-
-        // Draw and Overwrite target image cleanly over the canvas viewport matrices
-        function drawImageOverlaidOnCanvas(canvasId, file) {
-            return new Promise((resolve) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = function(event) {
-                    const img = new Image();
-                    img.src = event.target.result;
-                    img.onload = function() {
-                        const canvas = document.getElementById(canvasId);
-                        const ctx = canvas.getContext('2d');
-
-                        // Set canvas logical coordinates to match bounding rectangles dynamically
-                        if(canvasId.startsWith('p')) {
-                            canvas.width = img.width > 800 ? 800 : img.width;
-                            canvas.height = Math.round((img.height * canvas.width) / img.width);
-                        }
-
-                        const w = canvas.width;
-                        const h = canvas.height;
-
-                        // High performance centered cover drawing algorithm context
-                        ctx.clearRect(0, 0, w, h);
-                        const imgRatio = img.width / img.height;
-                        const canvasRatio = w / h;
-                        let sx, sy, sw, sh;
-
-                        if (imgRatio > canvasRatio) {
-                            sh = img.height;
-                            sw = sh * canvasRatio;
-                            sx = (img.width - sw) / 2;
-                            sy = 0;
-                        } else {
-                            sw = img.width;
-                            sh = sw / canvasRatio;
-                            sx = 0;
-                            sy = (img.height - sh) / 2;
-                        }
-
-                        ctx.drawImage(img, sx, sy, sw, sh, 0, 0, w, h);
-                        resolve();
-                    };
-                };
+        // Keep track of object URLs to clean up system memory
+        let currentObjectURLs = [];
+        function revokeExistingURLs() {
+            currentObjectURLs.forEach(url => {
+                try { window.URL.revokeObjectURL(url); } catch(e){}
             });
+            currentObjectURLs = [];
         }
 
-        // CRITICAL INJECTION: Overwrite action block executed instantly on file choose
-        async function processCanvasImagesAutomatically() {
+        // CRITICAL INJECTION: Pure Native Overwrite Engine
+        function processObjectImagesAutomatically() {
             const fileInput = document.getElementById('photoFilesInput');
             const totalFiles = Math.min(fileInput.files.length, 4);
 
-            clearAllCanvasesWithDefaultPlaceholder();
+            // Reset slots back to placeholders first
+            revokeExistingURLs();
+            for(let k=0; k<4; k++) {
+                document.getElementById(`pSlot${k}`).innerHTML = `<span class="placeholder-text-label">Photo ${k+1}</span>`;
+                document.getElementById(`fSlot${k}`).innerHTML = `<span class="a3-placeholder-text">Photo ${k+1}</span>`;
+            }
 
             if (totalFiles === 0) return;
 
+            // Direct Native DOM Image node insertion to completely bypass FileReader security limits
             for (let i = 0; i < totalFiles; i++) {
                 const file = fileInput.files[i];
-                // Overwrite App View Screen Preview Box matrices instantly
-                await drawImageOverlaidOnCanvas(`pCanvas${i}`, file);
-                // Overwrite A3 Hardware Capture matrices instantly
-                await drawImageOverlaidOnCanvas(`fCanvas${i}`, file);
+                const dynamicObjectLink = window.URL.createObjectURL(file);
+                currentObjectURLs.push(dynamicObjectLink);
+
+                // 1. Inject directly into Mobile Screen App View Slot
+                const pImgNode = document.createElement('img');
+                pImgNode.src = dynamicObjectLink;
+                const pSlotNode = document.getElementById(`pSlot${i}`);
+                pSlotNode.innerHTML = ''; 
+                pSlotNode.appendChild(pImgNode);
+
+                // 2. Inject directly into Hidden A3 Core Canvas Target Slot
+                const fImgNode = document.createElement('img');
+                fImgNode.src = dynamicObjectLink;
+                const fSlotNode = document.getElementById(`fSlot${i}`);
+                fSlotNode.innerHTML = '';
+                fSlotNode.appendChild(fImgNode);
             }
             triggerAutoLiveSync();
         }
@@ -536,12 +515,12 @@
 
             document.getElementById('loadingOverlay').style.display = 'flex';
             triggerAutoLiveSync();
-            await new Promise(r => setTimeout(r, 200));
+            await new Promise(r => setTimeout(r, 400)); // Optimal delay to ensure hardware renderer catches nodes
 
             const targetWorkspace = document.getElementById('a3MasterContainerToCapture');
 
             html2canvas(targetWorkspace, {
-                scale: 1.5, 
+                scale: 2, // Ultra High Clarity 2x sharp layout matrix boost
                 useCORS: true,
                 allowTaint: true,
                 backgroundColor: "#ffffff",

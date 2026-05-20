@@ -1,597 +1,537 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Photo Report Builder</title>
-
-<style>
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-}
-
-body{
-    background:#f1f5f9;
-    color:#334155;
-    padding-bottom:100px;
-}
-
-.container{
-    max-width:460px;
-    margin:auto;
-    padding:14px;
-}
-
-.card{
-    background:white;
-    border-radius:14px;
-    padding:18px;
-    margin-bottom:18px;
-    border:1px solid #e2e8f0;
-    box-shadow:0 2px 8px rgba(0,0,0,0.05);
-}
-
-.title{
-    font-size:14px;
-    font-weight:bold;
-    color:#2563eb;
-    margin-bottom:14px;
-}
-
-.form-group{
-    margin-bottom:14px;
-}
-
-label{
-    display:block;
-    margin-bottom:6px;
-    font-size:13px;
-    font-weight:bold;
-}
-
-input,
-select{
-    width:100%;
-    padding:12px;
-    border-radius:10px;
-    border:1px solid #cbd5e1;
-    font-size:14px;
-    background:white;
-}
-
-input[type=file]{
-    border-style:dashed;
-}
-
-.preview{
-    aspect-ratio:1584 / 1123;
-    background:white;
-    border:1px solid #cbd5e1;
-    border-radius:10px;
-    padding:12px;
-    display:flex;
-    flex-direction:column;
-    justify-content:space-between;
-}
-
-.preview-floor{
-    font-size:7px;
-    font-weight:900;
-    border-bottom:1px solid #e2e8f0;
-    padding-bottom:3px;
-}
-
-.preview-room{
-    font-size:6px;
-    margin-top:3px;
-}
-
-.preview-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:4px;
-    height:65%;
-}
-
-.slot{
-    border:1px solid #cbd5e1;
-    background:#f8fafc;
-    border-radius:5px;
-    overflow:hidden;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-}
-
-.slot img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    display:block;
-}
-
-.placeholder{
-    font-size:7px;
-    color:#94a3b8;
-}
-
-.footer{
-    text-align:center;
-}
-
-.remark{
-    font-size:6px;
-    font-weight:bold;
-}
-
-.auto-label{
-    font-size:4px;
-    margin-top:2px;
-    font-family:monospace;
-}
-
-.bottom-bar{
-    position:fixed;
-    bottom:0;
-    left:0;
-    right:0;
-    background:white;
-    border-top:1px solid #e2e8f0;
-    padding:12px;
-}
-
-.btn{
-    width:100%;
-    border:none;
-    background:#16a34a;
-    color:white;
-    padding:14px;
-    border-radius:12px;
-    font-size:15px;
-    font-weight:bold;
-}
-
-.loading{
-    display:none;
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,0.6);
-    z-index:999;
-    align-items:center;
-    justify-content:center;
-    flex-direction:column;
-    color:white;
-}
-
-.spinner{
-    width:40px;
-    height:40px;
-    border:4px solid white;
-    border-top-color:transparent;
-    border-radius:50%;
-    animation:spin .8s linear infinite;
-    margin-bottom:10px;
-}
-
-@keyframes spin{
-    to{
-        transform:rotate(360deg);
-    }
-}
-
-/* HIDDEN EXPORT */
-
-#exportArea{
-    position:absolute;
-    left:-99999px;
-    top:-99999px;
-    width:1584px;
-    height:1123px;
-    background:white;
-    padding:60px;
-    display:flex;
-    flex-direction:column;
-    justify-content:space-between;
-}
-
-.export-title{
-    font-size:24px;
-    font-weight:900;
-    border-bottom:3px solid black;
-    padding-bottom:4px;
-}
-
-.export-room{
-    font-size:18px;
-    margin-top:8px;
-    margin-bottom:20px;
-}
-
-.export-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:24px;
-    height:720px;
-}
-
-.export-slot{
-    border:1px solid #cbd5e1;
-    background:#f8fafc;
-    border-radius:6px;
-    overflow:hidden;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-}
-
-.export-slot img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    display:block;
-}
-
-.export-footer{
-    text-align:center;
-}
-
-.export-remark{
-    font-size:20px;
-    font-weight:bold;
-}
-
-.export-label{
-    margin-top:8px;
-    font-size:14px;
-    font-family:monospace;
-}
-
-</style>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zwe Maung Maung - Absolute Premium v6.5</title>
+    <style>
+        /* Modern Native App Style Reset */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        body {
+            background-color: #f1f5f9;
+            color: #334155;
+            padding-bottom: 100px;
+        }
+        /* Top Navigation Bar */
+        .nav-bar {
+            background-color: #1d4ed8;
+            color: white;
+            padding: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+        .nav-title {
+            font-size: 14px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .nav-subtitle {
+            font-size: 10px;
+            color: #bfdbfe;
+        }
+        .nav-tag {
+            background-color: #1e3a8a;
+            color: #93c5fd;
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        /* App Layout Container */
+        .container {
+            max-width: 450px;
+            margin: 16px auto;
+            padding: 0 12px;
+        }
+        /* Premium Cards */
+        .card {
+            background: white;
+            padding: 18px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            margin-bottom: 16px;
+        }
+        .card-title {
+            font-size: 12px;
+            font-weight: bold;
+            color: #1d4ed8;
+            text-transform: uppercase;
+            border-bottom: 1px solid #f1f5f9;
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+        }
+        /* Form Inputs */
+        .form-group {
+            margin-bottom: 14px;
+        }
+        .form-label {
+            display: block;
+            font-size: 11px;
+            font-weight: bold;
+            color: #475569;
+            margin-bottom: 5px;
+        }
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 12px;
+            outline: none;
+            background: white;
+        }
+        .form-control:focus {
+            border-color: #1d4ed8;
+        }
+        input[type="file"] {
+            padding: 8px;
+            background: #f8fafc;
+            border-style: dashed;
+            cursor: pointer;
+        }
+        .remark-input {
+            background-color: #f0fdf4;
+            border-color: #bbf7d0;
+            font-weight: 600;
+        }
+        /* Mobile Interactive Preview Box (Exact A3 Layout) */
+        .mobile-preview-box {
+            aspect-ratio: 1584 / 1123;
+            width: 100%;
+            background: #ffffff !important;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+        }
+        .preview-floor {
+            font-size: 7px;
+            font-weight: 900;
+            color: black;
+            text-transform: uppercase;
+            border-bottom: 0.5px solid #e2e8f0;
+            padding-bottom: 2px;
+        }
+        .preview-room {
+            font-size: 6px;
+            font-weight: bold;
+            color: #1e293b;
+            margin-top: 2px;
+        }
+        /* Symmetrical 2x2 Image Matrix Core */
+        .preview-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4px;
+            height: 65%;
+            margin: auto 0;
+            background: #ffffff !important;
+        }
+        /* Fixed Hardware Accelerated Rendering Wrappers */
+        .img-container-wrapper {
+            width: 100%;
+            height: 100%;
+            border-radius: 4px;
+            border: 0.5px solid #cbd5e1;
+            background-color: #f1f5f9;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .img-container-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .placeholder-text-label {
+            color: #94a3b8;
+            font-size: 6px;
+            font-weight: bold;
+        }
+        .preview-footer {
+            text-align: center;
+            width: 100%;
+            transform: scale(0.9);
+            margin-top: 4px;
+            background: #ffffff !important;
+        }
+        .preview-remark {
+            font-size: 6px;
+            font-weight: bold;
+            color: #0f172a;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .preview-label {
+            font-size: 4px;
+            font-weight: bold;
+            color: #64748b;
+            text-transform: uppercase;
+            margin-top: 1px;
+            font-family: monospace;
+        }
+        /* Sticky Footer Action Buttons UI */
+        .footer-actions {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid #e2e8f0;
+            padding: 12px;
+            box-shadow: 0 -4px 10px rgba(0,0,0,0.05);
+            z-index: 40;
+        }
+        .button-group {
+            max-width: 450px;
+            margin: 0 auto;
+        }
+        .btn {
+            width: 100%;
+            border: none;
+            color: white;
+            font-weight: bold;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            background-color: #7c3aed;
+            box-shadow: 0 4px 6px rgba(124, 58, 237, 0.2);
+        }
+        .btn:active { transform: scale(0.97); }
+        
+        /* UI Overlay Spinner */
+        .overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 100;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .spinner {
+            width: 32px;
+            height: 32px;
+            border: 4px solid white;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 10px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
 </head>
-
 <body>
 
-<div class="container">
-
-    <div class="card">
-
-        <div class="title">
-            📋 Report Information
+    <div class="nav-bar">
+        <div>
+            <div class="nav-title">Zwe Maung Maung</div>
+            <div class="nav-subtitle">Report Builder</div>
         </div>
-
-        <div class="form-group">
-
-            <label>Floor</label>
-
-            <select id="floor" onchange="syncText()">
-
-                <option>Ground Floor</option>
-                <option>First Floor</option>
-                <option>Second Floor</option>
-                <option>Third Floor</option>
-
-            </select>
-
-        </div>
-
-        <div class="form-group">
-
-            <label>Room Name</label>
-
-            <input
-            type="text"
-            id="room"
-            placeholder="R Room"
-            oninput="syncText()">
-
-        </div>
-
-        <div class="form-group">
-
-            <label>Choose Photos</label>
-
-            <input
-            type="file"
-            id="photos"
-            multiple
-            accept="image/*"
-            onchange="loadImages()">
-
-        </div>
-
-        <div class="form-group">
-
-            <label>Remark</label>
-
-            <input
-            type="text"
-            id="remark"
-            placeholder="Remark..."
-            oninput="syncText()">
-
-        </div>
-
+        <div class="nav-tag">v6.5-Base64Render</div>
     </div>
 
-    <!-- LIVE PREVIEW -->
-
-    <div class="card">
-
-        <div class="title">
-            🖼️ LIVE PREVIEW
-        </div>
-
-        <div class="preview">
-
-            <div>
-
-                <div class="preview-floor" id="pFloor">
-                    Ground Floor
-                </div>
-
-                <div class="preview-room" id="pRoom">
-                    R Room
-                </div>
-
+    <div class="container">
+        <div class="card">
+            <div class="card-title">📋 အချက်အလက်များ ဖြည့်သွင်းရန်</div>
+            
+            <div class="form-group">
+                <label class="form-label">၁။ အထပ် ရွေးချယ်ရန် (Floor Level)</label>
+                <select id="floorSelect" class="form-control" style="font-weight: bold;" onchange="triggerAutoLiveSync()">
+                    <option value="Ground Floor">Ground Floor</option>
+                    <option value="First Floor">First Floor</option>
+                    <option value="Second Floor">Second Floor</option>
+                    <option value="Third Floor">Third Floor</option>
+                    <option value="Fourth Floor">Fourth Floor</option>
+                    <option value="Penthouse Floor">Penthouse Floor</option>
+                </select>
             </div>
 
-            <div class="preview-grid">
-
-                <div class="slot" id="slot0">
-                    <span class="placeholder">Photo 1</span>
-                </div>
-
-                <div class="slot" id="slot1">
-                    <span class="placeholder">Photo 2</span>
-                </div>
-
-                <div class="slot" id="slot2">
-                    <span class="placeholder">Photo 3</span>
-                </div>
-
-                <div class="slot" id="slot3">
-                    <span class="placeholder">Photo 4</span>
-                </div>
-
+            <div class="form-group">
+                <label class="form-label">၂။ အခန်းအမည် သတ်မှတ်ရန် (Room Name)</label>
+                <input type="text" id="roomNameInput" placeholder="ဥပမာ- 4. M&E Control Room" class="form-control" oninput="triggerAutoLiveSync()">
             </div>
 
-            <div class="footer">
-
-                <div class="remark" id="pRemark">
-                    -
-                </div>
-
-                <div class="auto-label" id="pLabel">
-                    GF-R ROOM
-                </div>
-
+            <div class="form-group">
+                <label class="form-label" style="color:#1d4ed8; font-weight: 900;">၃။ ဓာတ်ပုံများ တင်ရန် (ပုံရွေးတာနဲ့ အကွက်ထဲ တိုက်ရိုက် Overwrite အုပ်ပါမည်)</label>
+                <input type="file" id="photoFilesInput" multiple accept="image/*" class="form-control" onchange="processBase64ImagesAutomatically()">
             </div>
 
+            <div class="form-group">
+                <label class="form-label" style="color:#1d4ed8;">၄။ ပုံအောက်တွင် label ရေးရန် (Remark/Status)</label>
+                <input type="text" id="roomRemarkInput" placeholder="ဥပမာ- နံရံမျက်နှာပြင် အချောကိုင်ခြင်း ဆောင်ရွက်ဆဲ" class="form-control remark-input" oninput="triggerAutoLiveSync()">
+            </div>
         </div>
 
+        <div class="card">
+            <div class="card-title" style="color:#475569;">🖼️ စာရွက်ပေါ်တွင် ပေါ်မည့်ပုံစံ (Live Preview)</div>
+            
+            <div class="mobile-preview-box">
+                <div>
+                    <div class="preview-floor" id="previewFloor">Ground Floor</div>
+                    <div class="preview-room" id="previewRoom">4. M&E Control Room</div>
+                </div>
+
+                <div class="preview-grid" id="previewPhotoGrid">
+                    <div class="img-container-wrapper" id="pSlot0"><span class="placeholder-text-label">Photo 1</span></div>
+                    <div class="img-container-wrapper" id="pSlot1"><span class="placeholder-text-label">Photo 2</span></div>
+                    <div class="img-container-wrapper" id="pSlot2"><span class="placeholder-text-label">Photo 3</span></div>
+                    <div class="img-container-wrapper" id="pSlot3"><span class="placeholder-text-label">Photo 4</span></div>
+                </div>
+
+                <div class="preview-footer">
+                    <div class="preview-remark" id="previewCustomRemark">-</div>
+                    <div class="preview-label" id="previewAutoLabel">GF-M&E CONTROL ROOM</div>
+                </div>
+            </div>
+        </div>
     </div>
 
-</div>
-
-<!-- BUTTON -->
-
-<div class="bottom-bar">
-
-    <button class="btn" onclick="downloadImage()">
-        💾 JPEG Export
-    </button>
-
-</div>
-
-<!-- LOADING -->
-
-<div class="loading" id="loading">
-
-    <div class="spinner"></div>
-
-    <div>Exporting...</div>
-
-</div>
-
-<!-- HIDDEN EXPORT -->
-
-<div id="exportArea">
-
-    <div>
-
-        <div class="export-title" id="eFloor">
-            Ground Floor
+    <div class="footer-actions">
+        <div class="button-group">
+            <button onclick="downloadPerfectA3ReportImage()" class="btn">💾 A3 Landscape ဓာတ်ပုံထုတ်ယူမည်</button>
         </div>
-
-        <div class="export-room" id="eRoom">
-            R Room
-        </div>
-
-        <div class="export-grid">
-
-            <div class="export-slot" id="eSlot0"></div>
-            <div class="export-slot" id="eSlot1"></div>
-            <div class="export-slot" id="eSlot2"></div>
-            <div class="export-slot" id="eSlot3"></div>
-
-        </div>
-
     </div>
 
-    <div class="export-footer">
-
-        <div class="export-remark" id="eRemark">
-        </div>
-
-        <div class="export-label" id="eLabel">
-        </div>
-
+    <div id="loadingOverlay" class="overlay">
+        <div class="spinner"></div>
+        <div style="margin-top:5px;">A3 Layout ထုတ်ယူနေပါသည် ကိုကို...</div>
     </div>
 
-</div>
+    <script>
+        // Array to store image base64 elements securely
+        let loadedBase64Images = [null, null, null, null];
 
-<script>
+        function getFloorShortCode(floorName) {
+            if (floorName.includes("Ground")) return "GF";
+            if (floorName.includes("First")) return "1F";
+            if (floorName.includes("Second")) return "2F";
+            if (floorName.includes("Third")) return "3F";
+            if (floorName.includes("Fourth")) return "4F";
+            if (floorName.includes("Penthouse")) return "PH";
+            return "Site";
+        }
 
-function getCode(floor){
+        function triggerAutoLiveSync() {
+            const floor = document.getElementById('floorSelect').value;
+            const roomName = document.getElementById('roomNameInput').value.trim() || "4. M&E Control Room";
+            const customRemark = document.getElementById('roomRemarkInput').value.trim() || "-";
 
-    if(floor.includes("Ground")) return "GF";
-    if(floor.includes("First")) return "1F";
-    if(floor.includes("Second")) return "2F";
-    if(floor.includes("Third")) return "3F";
+            document.getElementById('previewFloor').innerText = floor;
+            document.getElementById('previewRoom').innerText = roomName;
+            document.getElementById('previewCustomRemark').innerText = customRemark;
 
-    return "SITE";
-}
+            const floorCode = getFloorShortCode(floor);
+            const pureRoomTitle = roomName.replace(/^\d+\.\s*/, '');
+            document.getElementById('previewAutoLabel').innerText = `${floorCode}-${pureRoomTitle}`;
+        }
 
-/* TEXT SYNC */
+        // High Stability FileReader Module
+        function parseFileToBase64(file) {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = (e) => resolve(e.target.result);
+                reader.onerror = () => resolve("");
+            });
+        }
 
-function syncText(){
+        // CRITICAL INJECTION: Instantly push images into view matrices securely
+        async function processBase64ImagesAutomatically() {
+            const fileInput = document.getElementById('photoFilesInput');
+            const totalFiles = Math.min(fileInput.files.length, 4);
 
-    const floor =
-    document.getElementById("floor").value;
+            // Reset Slots back to defaults
+            loadedBase64Images = [null, null, null, null];
+            for(let k=0; k<4; k++) {
+                document.getElementById(`pSlot${k}`).innerHTML = `<span class="placeholder-text-label">Photo ${k+1}</span>`;
+            }
 
-    const room =
-    document.getElementById("room").value || "R Room";
+            if (totalFiles === 0) return;
 
-    const remark =
-    document.getElementById("remark").value || "-";
+            for (let i = 0; i < totalFiles; i++) {
+                const file = fileInput.files[i];
+                const base64String = await parseFileToBase64(file);
+                
+                if (base64String) {
+                    loadedBase64Images[i] = base64String;
 
-    const code = getCode(floor);
+                    // Inject Image node into App screen grid preview box context immediately
+                    const imgNode = document.createElement('img');
+                    imgNode.src = base64String;
+                    const targetSlot = document.getElementById(`pSlot${i}`);
+                    targetSlot.innerHTML = '';
+                    targetSlot.appendChild(imgNode);
+                }
+            }
+            triggerAutoLiveSync();
+        }
 
-    // PREVIEW
+        // Perfect 100% Security Bypass: Pure Hardware Draw Output System
+        function downloadPerfectA3ReportImage() {
+            const roomName = document.getElementById('roomNameInput').value.trim();
+            if (!roomName) {
+                alert("ကိုကိုရေ... အခန်းအမည် အရင်ရိုက်ထည့်ပေးပါနော်။");
+                return;
+            }
 
-    document.getElementById("pFloor").innerText = floor;
-    document.getElementById("pRoom").innerText = room;
-    document.getElementById("pRemark").innerText = remark;
-    document.getElementById("pLabel").innerText = `${code}-${room}`;
+            document.getElementById('loadingOverlay').style.display = 'flex';
 
-    // EXPORT
+            setTimeout(async () => {
+                // Instantiate clean dynamic hidden canvas
+                const outCanvas = document.createElement('canvas');
+                outCanvas.width = 1584;
+                outCanvas.height = 1123;
+                const ctx = outCanvas.getContext('2d');
 
-    document.getElementById("eFloor").innerText = floor;
-    document.getElementById("eRoom").innerText = room;
-    document.getElementById("eRemark").innerText = remark;
-    document.getElementById("eLabel").innerText = `${code}-${room}`;
-}
+                // 1. Draw solid safe white background workspace sheet
+                ctx.fillStyle = "#ffffff";
+                ctx.fillRect(0, 0, 1584, 1123);
 
-/* LOAD IMAGES */
+                // 2. Render Text Metadata Blocks
+                const floor = document.getElementById('floorSelect').value;
+                const customRemark = document.getElementById('roomRemarkInput').value.trim();
+                const floorCode = getFloorShortCode(floor);
+                const pureRoomTitle = roomName.replace(/^\d+\.\s*/, '');
+                const autoLabelString = `${floorCode}-${pureRoomTitle}`.toUpperCase();
 
-function loadImages(){
+                ctx.fillStyle = "#000000";
+                ctx.textAlign = "left";
+                
+                // Floor line
+                ctx.font = "900 24px sans-serif";
+                ctx.fillText(floor.toUpperCase(), 60, 84);
+                
+                // Border line under header
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.moveTo(60, 100);
+                ctx.lineTo(1524, 100);
+                ctx.stroke();
 
-    const files =
-    Array.from(document.getElementById("photos").files).slice(0,4);
+                // Room Title line
+                ctx.font = "700 18px sans-serif";
+                ctx.fillStyle = "#1e293b";
+                ctx.fillText(roomName, 60, 140);
 
-    // RESET
+                ctx.font = "italic 12px sans-serif";
+                ctx.fillStyle = "#94a3b8";
+                ctx.fillText("Site Photo :", 60, 165);
 
-    for(let i=0;i<4;i++){
+                // 3. Render 2x2 Symmetrical Photo Grid Matrices
+                const boxW = 710;
+                const boxH = 340;
+                const gridPositions = [
+                    { x: 60, y: 190 },   // Slot 1
+                    { x: 814, y: 190 },  // Slot 2
+                    { x: 60, y: 554 },   // Slot 3
+                    { x: 814, y: 554 }   // Slot 4
+                ];
 
-        document.getElementById(`slot${i}`).innerHTML =
-        `<span class="placeholder">Photo ${i+1}</span>`;
+                for (let i = 0; i < 4; i++) {
+                    const pos = gridPositions[i];
+                    const b64Data = loadedBase64Images[i];
 
-        document.getElementById(`eSlot${i}`).innerHTML = "";
-    }
+                    if (b64Data) {
+                        // Securely await direct context image render action block
+                        await new Promise((res) => {
+                            const img = new Image();
+                            img.src = b64Data;
+                            img.onload = function() {
+                                // Centered Cover Matrix calculations
+                                const imgRatio = img.width / img.height;
+                                const targetRatio = boxW / boxH;
+                                let sx, sy, sw, sh;
 
-    files.forEach((file,index)=>{
+                                if (imgRatio > targetRatio) {
+                                    sh = img.height;
+                                    sw = sh * targetRatio;
+                                    sx = (img.width - sw) / 2;
+                                    sy = 0;
+                                } else {
+                                    sw = img.width;
+                                    sh = sw / targetRatio;
+                                    sx = 0;
+                                    sy = (img.height - sh) / 2;
+                                }
 
-        const reader = new FileReader();
+                                ctx.drawImage(img, sx, sy, sw, sh, pos.x, pos.y, boxW, boxH);
+                                
+                                // Draw neat fine border around images
+                                ctx.strokeStyle = "#cbd5e1";
+                                ctx.lineWidth = 1;
+                                ctx.strokeRect(pos.x, pos.y, boxW, boxH);
+                                res();
+                            };
+                            img.onerror = () => res();
+                        });
+                    } else {
+                        // Placeholder block for missing slots
+                        ctx.fillStyle = "#f8fafc";
+                        ctx.fillRect(pos.x, pos.y, boxW, boxH);
+                        ctx.strokeStyle = "#cbd5e1";
+                        ctx.lineWidth = 1;
+                        ctx.strokeRect(pos.x, pos.y, boxW, boxH);
+                        
+                        ctx.fillStyle = "#94a3b8";
+                        ctx.font = "14px sans-serif";
+                        ctx.textAlign = "center";
+                        ctx.textBaseline = "middle";
+                        ctx.fillText("No Photo", pos.x + (boxW/2), pos.y + (boxH/2));
+                        ctx.textBaseline = "normal"; // Reset textbaseline
+                    }
+                }
 
-        reader.onload = function(e){
+                // 4. Render Footer Label Text Blocks
+                ctx.textAlign = "center";
+                ctx.fillStyle = "#000000";
+                ctx.font = "700 20px sans-serif";
+                ctx.fillText(customRemark && customRemark !== "-" ? customRemark : "", 1584 / 2, 980);
 
-            const imgData = e.target.result;
+                ctx.fillStyle = "#475569";
+                ctx.font = "bold 14px monospace";
+                ctx.fillText(autoLabelString, 1584 / 2, 1015);
 
-            // PREVIEW IMAGE
+                // 5. Fire instant high stability native download trigger
+                const imageURI = outCanvas.toDataURL("image/jpeg", 0.95);
+                const link = document.createElement('a');
+                link.download = `A3_Report_${floor}_${roomName.replace(/\s+/g, '_')}.jpg`;
+                link.href = imageURI;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
 
-            const img1 = document.createElement("img");
-
-            img1.src = imgData;
-
-            img1.onload = function(){
-
-                document.getElementById(`slot${index}`).innerHTML = "";
-
-                document.getElementById(`slot${index}`).appendChild(img1);
-
-                // EXPORT IMAGE
-
-                const img2 = document.createElement("img");
-
-                img2.src = imgData;
-
-                document.getElementById(`eSlot${index}`).appendChild(img2);
-            };
-        };
-
-        reader.readAsDataURL(file);
-
-    });
-
-}
-
-/* EXPORT */
-
-async function downloadImage(){
-
-    const room =
-    document.getElementById("room").value.trim();
-
-    if(!room){
-
-        alert("Room Name ထည့်ပါ");
-
-        return;
-    }
-
-    document.getElementById("loading").style.display = "flex";
-
-    await new Promise(r=>setTimeout(r,1000));
-
-    const area =
-    document.getElementById("exportArea");
-
-    html2canvas(area,{
-        scale:2,
-        useCORS:true,
-        backgroundColor:"#ffffff"
-    })
-    .then(canvas=>{
-
-        const url =
-        canvas.toDataURL("image/jpeg",0.95);
-
-        const link =
-        document.createElement("a");
-
-        link.download =
-        `Report_${room}.jpg`;
-
-        link.href = url;
-
-        link.click();
-
-        document.getElementById("loading").style.display = "none";
-    })
-    .catch(err=>{
-
-        console.log(err);
-
-        alert("Export Error");
-
-        document.getElementById("loading").style.display = "none";
-    });
-
-}
-
-/* INIT */
-
-syncText();
-
-</script>
-
+                document.getElementById('loadingOverlay').style.display = 'none';
+            }, 300);
+        }
+    </script>
 </body>
 </html>
+

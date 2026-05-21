@@ -260,10 +260,10 @@
 
     <div class="container">
         <div class="card">
-            <div class="card-title">📋 အချက်အလက်များ ဖြည့်သွင်းရန်</div>
+            <div class="card-title">📋 Input Information</div>
             
             <div class="form-group">
-                <label class="form-label">၁။ အထပ် ရွေးချယ်ရန် (Floor Level)</label>
+                <label class="form-label">1.Floor Level</label>
                 <select id="floorSelect" class="form-control" style="font-weight: bold;" onchange="triggerAutoLiveSync()">
                     <option value="Ground Floor">Ground Floor</option>
                     <option value="First Floor">First Floor</option>
@@ -275,23 +275,23 @@
             </div>
 
             <div class="form-group">
-                <label class="form-label">၂။ အခန်းအမည် သတ်မှတ်ရန် (Room Name)</label>
+                <label class="form-label">2.Room Name</label>
                 <input type="text" id="roomNameInput" placeholder="ဥပမာ- 4. M&E Control Room" class="form-control" oninput="triggerAutoLiveSync()">
             </div>
 
             <div class="form-group">
-                <label class="form-label" style="color:#1d4ed8; font-weight: 900;">၃။ ဓာတ်ပုံများ တင်ရန် (ပုံရွေးတာနဲ့ အကွက်ထဲ တိုက်ရိုက် Overwrite အုပ်ပါမည်)</label>
+                <label class="form-label" style="color:#1d4ed8; font-weight: 900;">3.Upload Photos</label>
                 <input type="file" id="photoFilesInput" multiple accept="image/*" class="form-control" onchange="processBase64ImagesAutomatically()">
             </div>
 
             <div class="form-group">
-                <label class="form-label" style="color:#1d4ed8;">၄။ ပုံအောက်တွင် label ရေးရန် (Remark/Status)</label>
+                <label class="form-label" style="color:#1d4ed8;">4.Remark</label>
                 <input type="text" id="roomRemarkInput" placeholder="ဥပမာ- နံရံမျက်နှာပြင် အချောကိုင်ခြင်း ဆောင်ရွက်ဆဲ" class="form-control remark-input" oninput="triggerAutoLiveSync()">
             </div>
         </div>
 
         <div class="card">
-            <div class="card-title" style="color:#475569;">🖼️ စာရွက်ပေါ်တွင် ပေါ်မည့်ပုံစံ (Live Preview)</div>
+            <div class="card-title" style="color:#475569;">🖼️ Live Preview</div>
             
             <div class="mobile-preview-box">
                 <div>
@@ -316,13 +316,13 @@
 
     <div class="footer-actions">
         <div class="button-group">
-            <button onclick="downloadPerfectA3ReportImage()" class="btn">💾 A3 Landscape ဓာတ်ပုံထုတ်ယူမည်</button>
+            <button onclick="downloadPerfectA3ReportImage()" class="btn">💾 Save as A3 Landscape Photo.</button>
         </div>
     </div>
 
     <div id="loadingOverlay" class="overlay">
         <div class="spinner"></div>
-        <div style="margin-top:5px;">A3 Layout ထုတ်ယူနေပါသည် ကိုကို...</div>
+        <div style="margin-top:5px;">ဓာတ်ပုံ ထုတ်ယူနေပါသည် ကိုကို...</div>
     </div>
 
     <script>
